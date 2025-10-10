@@ -27,6 +27,7 @@ async def getter_completed_car_name(i18n: TranslatorHub,
                                     dialog_manager: DialogManager,
                                     **kwargs) -> dict[str, str]:
     car_name = dialog_manager.dialog_data.get("car_name")
+    print(dialog_manager.dialog_data)
     start_completed_car_name_text = i18n.start.completed.add.car(
         car_name=car_name,
     )
