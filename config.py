@@ -63,3 +63,6 @@ def load_config(path: str | None = None) -> Config:
             db=env.int("REDIS_DB", 0),
         )
     )
+
+
+CURRENT_CAR_NAME_LENGTH = 40
