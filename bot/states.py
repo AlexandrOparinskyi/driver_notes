@@ -10,3 +10,8 @@ class StartState(StatesGroup):
 
 class HomeState(StatesGroup):
     home = State()
+
+
+class CarState(StatesGroup):
+    home = State()
+    edit_part = State()

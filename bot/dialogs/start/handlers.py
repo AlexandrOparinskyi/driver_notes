@@ -3,7 +3,7 @@ from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button
 
-from bot.states import StartState
+from bot.states import StartState, CarState
 from bot.utils import create_car
 from config import CURRENT_CAR_NAME_LENGTH
 
@@ -41,3 +41,10 @@ async def start_enter_car_name(message: Message,
                                       is_first_car=True)
 
     await dialog_manager.switch_to(state=StartState.completed_car_name)
+
+
+async def start_car_menu(callback: CallbackQuery,
+                         button: Button,
+                         dialog_manager: DialogManager):
+    await dialog_manager.start(state=CarState.home,
+                               data=dialog_manager.dialog_data)

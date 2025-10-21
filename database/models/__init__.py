@@ -6,4 +6,6 @@ __all__ = ["Base",
            "User",
            "Car",
            "EngineTypeEnum",
-           "TransmissionTypeEnum"]
+           "TransmissionTypeEnum",
+           "CarMark",
+           "CarModel"]

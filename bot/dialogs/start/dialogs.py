@@ -11,9 +11,9 @@ from .getters import (getter_start,
                       getter_completed_car_name)
 from .handlers import (start_acquaintance_button,
                        start_add_car_button,
-                       start_enter_car_name)
+                       start_enter_car_name,
+                       start_car_menu)
 from ..general import (generale_message_not_text,
-                       service_in_development,
                        home_button)
 
 start_dialog = Dialog(
@@ -45,7 +45,7 @@ start_dialog = Dialog(
         Format("{start_completed_car_name_text}"),
         Button(text=Format("{car_menu_button}"),
                id="car_menu_button",
-               on_click=service_in_development),
+               on_click=start_car_menu),
         Button(text=Format("{home_button}"),
                id="home_button",
                on_click=home_button),

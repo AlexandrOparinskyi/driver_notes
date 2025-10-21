@@ -1,7 +1,7 @@
 import enum
 from datetime import datetime
 
-from sqlalchemy import DateTime, func, ForeignKey, Enum
+from sqlalchemy import DateTime, func, ForeignKey, Enum, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
@@ -16,8 +16,8 @@ class EngineTypeEnum(enum.Enum):
 
 
 class TransmissionTypeEnum(enum.Enum):
-    AUTOMATIC = "Автоматическая"
-    MANUAL = "Механическая"
+    AUTOMATIC = "Автомат"
+    MANUAL = "Механика"
     CVT = "Вариатор"
     ROBOTIC = "Робот"
 
@@ -52,3 +52,23 @@ class Car(Base):
     user = relationship("User",
                         back_populates="cars",
                         lazy="joined")
+
+
+class CarMark(Base):
+    __tablename__ = "car_marks"
+
+    name: Mapped[str] = mapped_column(nullable=False, unique=True)
+    rating: Mapped[int] = mapped_column(default=0, nullable=False)
+
+
+class CarModel(Base):
+    __tablename__ = "car_models"
+    __table_args__ = (
+        UniqueConstraint("name", "mark_id", name="unique_mark_model"),
+    )
+
+    name: Mapped[str] = mapped_column(nullable=False)
+    mark_id: Mapped[int] = mapped_column(ForeignKey("car_marks.id",
+                                                    ondelete="CASCADE"),
+                                         nullable=False)
+    rating: Mapped[int] = mapped_column(default=0, nullable=False)
