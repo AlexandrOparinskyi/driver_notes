@@ -22,4 +22,4 @@ async def command_start(message: Message,
         await dialog_manager.start(state=StartState.start)
         return
 
-    await dialog_manager.start(state=StartState.start)
+    await dialog_manager.start(state=HomeState.home)

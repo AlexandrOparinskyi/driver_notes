@@ -11,6 +11,8 @@ class StartState(StatesGroup):
 
 class HomeState(StatesGroup):
     home = State()
+    write_developer = State()
+    instructions = State()
 
 
 class CarState(StatesGroup):

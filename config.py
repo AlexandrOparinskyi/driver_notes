@@ -5,6 +5,7 @@ from dataclasses import dataclass
 @dataclass
 class TgBot:
     token: str
+    dev_url: str
 
 
 @dataclass
@@ -44,6 +45,7 @@ def load_config(path: str | None = None) -> Config:
     return Config(
         tg_bot=TgBot(
             token=env.str("BOT_TOKEN"),
+            dev_url=env.str("DEV_URL")
         ),
         db=Db(
             host=env.str("DB_HOST", "localhost"),
