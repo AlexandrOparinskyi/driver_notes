@@ -2,6 +2,8 @@ from datetime import datetime
 
 from fluentogram import TranslatorHub
 
+from database import EngineTypeEnum, TransmissionTypeEnum
+
 
 def get_text_for_edit_part(i18n: TranslatorHub,
                            part: str) -> str:
@@ -18,3 +20,38 @@ def get_text_for_edit_part(i18n: TranslatorHub,
     }
 
     return text_data.get(part, i18n.no.found.back())
+
+
+def get_text_for_car_data(data: dict) -> str:
+    text = "\n"
+
+    mark = data.get("car_mark")
+    if mark:
+        text += f"<b>• 🚗 Марка:</b> {mark}\n"
+
+    model = data.get("car_model")
+    if model:
+        text += f"<b>• 🚙 Модель:</b> {model}\n"
+
+    color = data.get("car_color")
+    if color:
+        text += f"<b>• 🎨 Цвет:</b> {color}\n"
+
+    year = data.get("car_year")
+    if year:
+        text += f"<b>• 📅 Год:</b> {year}\n"
+
+    mileage = data.get("car_mileage")
+    if mileage:
+        text += f"<b>• 🛣️ Пробег:</b> {mileage}\n"
+
+    engine = data.get("car_engine")
+    if engine:
+        text += f"<b>• ⚙️ Двигатель:</b> {EngineTypeEnum[engine].value}\n"
+
+    transmission = data.get("car_transmission")
+    if transmission:
+        value = TransmissionTypeEnum[transmission].value
+        text += f"<b>• 🔄 Коробка передач:</b> {value}\n"
+
+    return text

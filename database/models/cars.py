@@ -72,3 +72,5 @@ class CarModel(Base):
                                                     ondelete="CASCADE"),
                                          nullable=False)
     rating: Mapped[int] = mapped_column(default=0, nullable=False)
+
+    mark = relationship("CarMark", uselist=False, lazy="joined")

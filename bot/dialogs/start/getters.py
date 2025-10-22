@@ -34,3 +34,9 @@ async def getter_completed_car_name(i18n: TranslatorHub,
     return {"start_completed_car_name_text": start_completed_car_name_text,
             "car_menu_button": i18n.start.car.menu.button(),
             "home_button": i18n.home.button()}
+
+
+async def getter_start_confirm(i18n: TranslatorHub,
+                               **kwargs) -> dict[str, str]:
+    return {"start_confirm_text": i18n.start.confirm.text(),
+            "home_button": i18n.home.button()}

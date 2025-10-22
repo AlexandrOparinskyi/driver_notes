@@ -6,6 +6,7 @@ class StartState(StatesGroup):
     acquaintance = State()
     car_name = State()
     completed_car_name = State()
+    confirm = State()
 
 
 class HomeState(StatesGroup):

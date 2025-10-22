@@ -13,7 +13,6 @@ def get_button_for_add_car(i18n: TranslatorHub) -> list[tuple]:
         (i18n.car.mileage.button(), "car_mileage"),
         (i18n.car.engine.button(), "car_engine"),
         (i18n.car.transmission.button(), "car_transmission"),
-        (i18n.car.documents.button(), "car_documents"),
     ]
 
 

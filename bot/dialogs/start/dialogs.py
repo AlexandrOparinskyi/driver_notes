@@ -8,7 +8,8 @@ from bot.states import StartState
 from .getters import (getter_start,
                       getter_start_acquaintance,
                       getter_start_car_name,
-                      getter_completed_car_name)
+                      getter_completed_car_name,
+                      getter_start_confirm)
 from .handlers import (start_acquaintance_button,
                        start_add_car_button,
                        start_enter_car_name,
@@ -51,5 +52,13 @@ start_dialog = Dialog(
                on_click=home_button),
         getter=getter_completed_car_name,
         state=StartState.completed_car_name
+    ),
+    Window(
+        Format("{start_confirm_text}"),
+        Button(text=Format("{home_button}"),
+               id="home_button",
+               on_click=home_button),
+        getter=getter_start_confirm,
+        state=StartState.confirm
     )
 )
