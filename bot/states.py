@@ -13,6 +13,7 @@ class HomeState(StatesGroup):
     home = State()
     write_developer = State()
     instructions = State()
+    get_instruction = State()
 
 
 class CarState(StatesGroup):

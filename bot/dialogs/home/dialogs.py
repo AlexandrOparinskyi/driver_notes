@@ -1,13 +1,15 @@
 from aiogram_dialog import Dialog, Window
-from aiogram_dialog.widgets.kbd import Button, Row, Url
+from aiogram_dialog.widgets.kbd import Button, Row, Url, Select, Column
 from aiogram_dialog.widgets.text import Format
 
 from bot.states import HomeState
 from .getters import (getter_home,
                       getter_home_write_developer,
-                      getter_home_instructions)
+                      getter_home_instructions,
+                      getter_home_get_instruction)
 from .handlers import (home_write_developer,
-                       home_instructions)
+                       home_instructions,
+                       home_get_instruction)
 from ..general import (service_in_development,
                        home_button)
 
@@ -50,10 +52,26 @@ home_dialog = Dialog(
     ),
     Window(
         Format("{home_instruction_text}"),
+        Column(Select(text=Format("{item[0]}"),
+                      id="instructions",
+                      item_id_getter=lambda x: x[1],
+                      items="buttons",
+                      on_click=home_get_instruction)),
         Button(text=Format("{home_button}"),
                id="home_button",
                on_click=home_button),
         getter=getter_home_instructions,
         state=HomeState.instructions
+    ),
+    Window(
+        Format("{instruction_text}"),
+        Button(text=Format("{back_button}"),
+               id="back_button",
+               on_click=home_instructions),
+        Button(text=Format("{home_button}"),
+               id="home_button",
+               on_click=home_button),
+        getter=getter_home_get_instruction,
+        state=HomeState.get_instruction
     )
 )

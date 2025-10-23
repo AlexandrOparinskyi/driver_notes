@@ -1,9 +1,10 @@
 import random
 
 from aiogram.types import User
+from aiogram_dialog import DialogManager
 from fluentogram import TranslatorHub
 
-from bot.utils import get_user_by_id
+from bot.utils import get_user_by_id, get_instruction_by_locale, get_instruction_by_id
 from config import Config, load_config
 
 
@@ -41,6 +42,22 @@ async def getter_home_write_developer(i18n: TranslatorHub,
 
 
 async def getter_home_instructions(i18n: TranslatorHub,
-                                   **kwargs) -> dict[str, str]:
+                                   event_from_user: User,
+                                   **kwargs) -> dict[str, str | list]:
+    instr = await get_instruction_by_locale(event_from_user.language_code)
+    buttons = [(i.title, i.id) for i in instr]
+
     return {"home_instruction_text": i18n.home.instruction.text(),
-            "home_button": i18n.home.button()}
+            "home_button": i18n.home.button(),
+            "buttons": buttons}
+
+
+async def getter_home_get_instruction(i18n: TranslatorHub,
+                                      dialog_manager: DialogManager,
+                                      **kwargs) -> dict[str, str]:
+    instr_id = int(dialog_manager.dialog_data.get("instr_id"))
+    instruction = await get_instruction_by_id(instr_id)
+
+    return {"instruction_text": instruction.text,
+            "home_button": i18n.home.button(),
+            "back_button": i18n.back.button()}

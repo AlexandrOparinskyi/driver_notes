@@ -24,8 +24,10 @@ async def home_button(callback: CallbackQuery,
 
 
 async def service_in_development(callback: CallbackQuery,
-                               button: Button,
-                               dialog_manager: DialogManager):
+                                 button: Button,
+                                 dialog_manager: DialogManager):
     i18n = dialog_manager.middleware_data.get("i18n")
+    dialog_manager.show_mode = ShowMode.NO_UPDATE
+
     await callback.answer(text=i18n.service.developing.text(),
                           show_alert=True)
