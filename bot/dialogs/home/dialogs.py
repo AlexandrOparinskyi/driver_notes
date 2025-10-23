@@ -9,7 +9,8 @@ from .getters import (getter_home,
                       getter_home_get_instruction)
 from .handlers import (home_write_developer,
                        home_instructions,
-                       home_get_instruction)
+                       home_get_instruction,
+                       home_garage)
 from ..general import (service_in_development,
                        home_button)
 
@@ -21,7 +22,7 @@ home_dialog = Dialog(
                on_click=service_in_development),
         Row(Button(text=Format("{garage_button}"),
                    id="garage_button",
-                   on_click=service_in_development),
+                   on_click=home_garage),
             Button(text=Format("{lk_button}"),
                    id="lk_button",
                    on_click=service_in_development)),

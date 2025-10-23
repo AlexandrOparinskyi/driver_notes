@@ -28,8 +28,12 @@ async def get_button_for_edit_car(i18n: TranslatorHub,
         return [(m.name, m.id) for m in models]
 
     elif part == "car_color":
-        colors = ["⚫ Черный", "⬤ Белый", "⚪ Серый", "🔴 Красный",
-                  "🔵 Синий", "🟤 Коричневый"]
+        colors = [i18n.black.color.text(),
+                  i18n.white.color.text(),
+                  i18n.grey.color.text(),
+                  i18n.red.color.text(),
+                  i18n.blue.color.text(),
+                  i18n.brown.color.text(),]
         return [(c, c) for c in colors]
 
     elif part == "car_engine":

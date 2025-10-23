@@ -72,3 +72,10 @@ car-engine-button = ⚙️ Двигатель
 car-transmission-button = 🔄 Коробка передач
 car-documents-button = 📝 Документы
 car-save-button = ✅ Закончить и сохранить
+
+black-color-text = ⚫ Черный
+white-color-text = ⬤ Белый
+grey-color-text = ⚪ Серый
+red-color-text = 🔴 Красный
+blue-color-text = 🔵 Синий
+brown-color-text = 🟤 Коричневый

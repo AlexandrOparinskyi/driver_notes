@@ -55,20 +55,3 @@ support-project-button = ☕ Поддержать проект
 write-developer-button = 📧 Написать нам
 
 developer-button = 💡 Предложить идею
-
-
-
-<b>💎 What Does Premium Offer?</b>
-
-This is ultimate control and advanced features for those who want the maximum!
-
-<b>Premium includes:</b>
-• Unlimited cars in your garage
-• Detailed reports for any time period
-• Data export to Excel/PDF
-• Custom expense categories
-• Priority technical support
-
-All this for the price of a cup of coffee per month! Premium is an investment in your financial clarity and comfort.
-
-<b>Unlock all possibilities for perfect tracking!</b>

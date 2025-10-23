@@ -19,3 +19,7 @@ class HomeState(StatesGroup):
 class CarState(StatesGroup):
     home = State()
     edit_part = State()
+
+
+class GarageState(StatesGroup):
+    home = State()

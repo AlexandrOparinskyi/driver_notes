@@ -2,7 +2,7 @@ from aiogram.types import CallbackQuery
 from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.kbd import Button, Select
 
-from bot.states import HomeState
+from bot.states import HomeState, GarageState
 
 
 async def home_write_developer(callback: CallbackQuery,
@@ -24,3 +24,9 @@ async def home_get_instruction(callback: CallbackQuery,
     dialog_manager.dialog_data.update(instr_id=item_id)
 
     await dialog_manager.switch_to(state=HomeState.get_instruction)
+
+
+async def home_garage(callback: CallbackQuery,
+                      button: Button,
+                      dialog_manager: DialogManager):
+    await dialog_manager.start(state=GarageState.home)
