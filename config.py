@@ -68,3 +68,4 @@ def load_config(path: str | None = None) -> Config:
 
 
 CURRENT_CAR_NAME_LENGTH = 40
+PREMIUM_PRICE = 249

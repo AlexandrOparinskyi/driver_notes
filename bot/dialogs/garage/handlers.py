@@ -4,13 +4,18 @@ from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button
 
 from bot.states import GarageState, CarState
-from bot.utils import create_car
+from bot.utils import create_car, get_user_by_id
 from config import CURRENT_CAR_NAME_LENGTH
 
 
 async def garage_add_car(callback: CallbackQuery,
                          button: Button,
                          dialog_manager: DialogManager):
+    user = await get_user_by_id(callback.from_user.id)
+    if len(user.get_active_cars) >= 2 and not user.is_premium:
+        await dialog_manager.switch_to(state=GarageState.offer_premium)
+        return
+
     await dialog_manager.switch_to(state=GarageState.car_name)
 
 

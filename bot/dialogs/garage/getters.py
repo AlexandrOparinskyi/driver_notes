@@ -2,6 +2,7 @@ from aiogram.types import User
 from fluentogram import TranslatorHub
 
 from bot.utils import get_user_by_id
+from config import PREMIUM_PRICE
 
 
 async def getter_garage(i18n: TranslatorHub,
@@ -19,3 +20,15 @@ async def getter_car_name(i18n: TranslatorHub,
                           **kwargs) -> dict[str, str]:
     return {"car_name_text": i18n.car.name.text(),
             "back_button": i18n.back.button()}
+
+
+async def getter_car_offer_premium(i18n: TranslatorHub,
+                                   **kwargs) -> dict[str, str]:
+    car_offer_premium_text = i18n.car.offer.premium.text(
+        premium_price=PREMIUM_PRICE
+    )
+
+    return {"car_offer_premium_text": car_offer_premium_text,
+            "connect_premium_button": i18n.connect.premium.button(),
+            "back_button": i18n.back.button(),
+            "home_button": i18n.home.button()}
