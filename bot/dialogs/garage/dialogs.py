@@ -7,10 +7,12 @@ from aiogram_dialog.widgets.text import Format
 from bot.states import GarageState
 from .getters import (getter_garage,
                       getter_car_name,
-                      getter_car_offer_premium)
+                      getter_car_offer_premium,
+                      getter_car_detail)
 from .handlers import (garage_add_car,
                        back_button_to_garage,
-                       garage_enter_car_name)
+                       garage_enter_car_name,
+                       garage_select_car)
 from ..general import (home_button,
                        generale_message_not_text,
                        service_in_development)
@@ -21,7 +23,8 @@ garage_dialog = Dialog(
         Group(Select(text=Format("{item.name}"),
                      id="car",
                      item_id_getter=lambda x: x.id,
-                     items="cars")),
+                     items="cars",
+                     on_click=garage_select_car)),
         Button(text=Format("{add_car_button}"),
                id="add_car_button",
                on_click=garage_add_car),
@@ -55,5 +58,13 @@ garage_dialog = Dialog(
                on_click=home_button),
         getter=getter_car_offer_premium,
         state=GarageState.offer_premium
+    ),
+    Window(
+        Format("{car_detail_text}"),
+        Button(text=Format("{back_button}"),
+               id="back_button_to_garage",
+               on_click=back_button_to_garage),
+        getter=getter_car_detail,
+        state=GarageState.car_detail
     )
 )

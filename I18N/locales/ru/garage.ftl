@@ -38,10 +38,24 @@ car-offer-premium-text =
 
     Откроем безлимитный гараж? 😊
 
+car-details-text =
+    <b>🚙 { $car_name }</b>
+
+    <b>📊 Общая статистика:</b>
+    💰 Всего расходов: <b>{ $total_expenses } ₽</b>
+    🔧 Количество работ: <b>{ $total_records }</b>
+    🛣️ Пробег: <b>{ $car_mileage } км</b>
+    📅 В эксплуатации: <b>{ $days_owned } дней</b>
+
+    <b>📅 Последние работы:</b>
+    { $recent_activities }
+
 
 add-car-button = ➕ Добавить машину
 
-delete-car-button = ❌ Удалить машину
-documents-button = 📋 Документы
-report-button = 📈 Расходы
-car-data-button = 📇 Данные
+edit-car-name-button = ✏️ Переименовать
+edit-car-data-button = 📝 Редактировать данные
+edit-car-documents-button = 📎 Редактировать документы
+get-car-report-button = 📈 Посмотреть статистику
+setting-notification-button = 🔔 Настроить напоминания
+delete-car-button = 🗑️ Удалить из гаража

@@ -1,7 +1,7 @@
 from aiogram.types import CallbackQuery, Message
 from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
-from aiogram_dialog.widgets.kbd import Button
+from aiogram_dialog.widgets.kbd import Button, Select
 
 from bot.states import GarageState, CarState
 from bot.utils import create_car, get_user_by_id
@@ -17,6 +17,15 @@ async def garage_add_car(callback: CallbackQuery,
         return
 
     await dialog_manager.switch_to(state=GarageState.car_name)
+
+
+async def garage_select_car(callback: CallbackQuery,
+                            widget: Select,
+                            dialog_manager: DialogManager,
+                            item_id: str):
+    dialog_manager.dialog_data.update(car_id=item_id)
+
+    await dialog_manager.switch_to(state=GarageState.car_detail)
 
 
 async def back_button_to_garage(callback: CallbackQuery,
