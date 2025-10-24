@@ -23,3 +23,4 @@ class CarState(StatesGroup):
 
 class GarageState(StatesGroup):
     home = State()
+    car_name = State()

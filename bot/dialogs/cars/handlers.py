@@ -3,7 +3,7 @@ from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Select, Button
 
-from bot.states import CarState, StartState, HomeState
+from bot.states import CarState, StartState, HomeState, GarageState
 from bot.utils import (get_car_mark_by_id,
                        get_car_model_by_id, update_car_by_id)
 
@@ -67,4 +67,4 @@ async def car_save(callback: CallbackQuery,
         await dialog_manager.start(state=StartState.confirm)
         return
 
-    await dialog_manager.start(state=HomeState.home)
+    await dialog_manager.start(state=GarageState.home)
