@@ -31,6 +31,17 @@ async def get_car_by_id(car_id: int) -> Car | None:
         ))
 
 
+async def rename_car(car_id: int,
+                     car_name: str) -> None:
+    async with get_async_session() as session:
+        await session.execute(update(Car).where(
+            Car.id == car_id
+        ).values(
+            name=car_name
+        ))
+        await session.commit()
+
+
 async def update_car_by_id(car_id: str,
                            user_id: int,
                            car_name: str | None,

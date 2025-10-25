@@ -40,3 +40,8 @@ async def getter_edit_part(i18n: TranslatorHub,
     return {"car_edit_part_text": text,
             "buttons": buttons,
             "back_button": i18n.back.button()}
+
+
+async def getter_edit_car_name(i18n: TranslatorHub,
+                               **kwargs) -> dict[str, str]:
+    return {"car_rename_text": i18n.car.rename.text()}

@@ -12,4 +12,5 @@ __all__ = ["get_user_by_id",
            "get_car_mark_by_id",
            "get_car_model_by_id",
            "get_instruction_by_locale",
-           "get_instruction_by_id"]
+           "get_instruction_by_id",
+           "rename_car"]

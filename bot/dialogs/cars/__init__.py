@@ -1,7 +1,7 @@
 from aiogram import Router
 
-from bot.dialogs.cars.dialogs import add_car_dialog
+from .dialogs import edit_car_dialog
 
 
 def register_car_dialogs(router: Router) -> None:
-    router.include_routers(add_car_dialog)
+    router.include_router(edit_car_dialog)

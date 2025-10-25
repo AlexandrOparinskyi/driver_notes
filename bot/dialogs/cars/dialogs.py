@@ -6,16 +6,18 @@ from aiogram_dialog.widgets.text import Format
 
 from .filters import car_check_enter_part
 from .getters import (getter_car_home,
-                      getter_edit_part)
+                      getter_edit_part,
+                      getter_edit_car_name)
 from bot.states import CarState
 from .handlers import (car_edit_part,
                        car_back_button_home,
                        car_select_part,
                        car_enter_part,
-                       car_save)
+                       car_save,
+                       car_rename)
 from ..general import generale_message_not_text
 
-add_car_dialog = Dialog(
+edit_car_dialog = Dialog(
     Window(
         Format("{car_edit_menu_text}"),
         Group(Select(text=Format("{item[0]}"),
@@ -51,5 +53,13 @@ add_car_dialog = Dialog(
                on_click=car_back_button_home),
         getter=getter_edit_part,
         state=CarState.edit_part
+    ),
+    Window(
+        Format("{car_rename_text}"),
+        MessageInput(func=car_rename,
+                     content_types=ContentType.TEXT),
+        MessageInput(func=generale_message_not_text),
+        getter=getter_edit_car_name,
+        state=CarState.edit_car_name
     )
 )

@@ -66,3 +66,12 @@ async def garage_car_edit_data(callback: CallbackQuery,
 
     await dialog_manager.start(CarState.home,
                                data={"back_to_car": car.id, **car.to_dict})
+
+
+async def garage_rename_car(callback: CallbackQuery,
+                            button: Button,
+                            dialog_manager: DialogManager):
+    car_id = int(dialog_manager.dialog_data.get("car_id"))
+
+    await dialog_manager.start(state=CarState.edit_car_name,
+                               data={"car_id": car_id})

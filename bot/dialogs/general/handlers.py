@@ -1,5 +1,5 @@
 from aiogram.types import Message, CallbackQuery
-from aiogram_dialog import DialogManager, ShowMode
+from aiogram_dialog import DialogManager, ShowMode, StartMode
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button
 
@@ -20,7 +20,8 @@ async def generale_message_not_text(message: Message,
 async def home_button(callback: CallbackQuery,
                       button: Button,
                       dialog_manager: DialogManager):
-    await dialog_manager.start(state=HomeState.home)
+    await dialog_manager.start(state=HomeState.home,
+                               mode=StartMode.RESET_STACK)
 
 
 async def service_in_development(callback: CallbackQuery,
