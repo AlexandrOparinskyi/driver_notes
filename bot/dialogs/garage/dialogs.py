@@ -13,7 +13,9 @@ from .handlers import (garage_add_car,
                        back_button_to_garage,
                        garage_enter_car_name,
                        garage_select_car,
-                       garage_car_edit_data, garage_rename_car)
+                       garage_car_edit_data,
+                       garage_rename_car,
+                       garage_car_documents)
 from ..general import (home_button,
                        generale_message_not_text,
                        service_in_development)
@@ -70,7 +72,7 @@ garage_dialog = Dialog(
                on_click=garage_car_edit_data),
         Button(text=Format("{edit_documents_button}"),
                id="edit_documents_button",
-               on_click=None),
+               on_click=garage_car_documents),
         Button(text=Format("{get_report_button}"),
                id="get_report_button",
                on_click=service_in_development),

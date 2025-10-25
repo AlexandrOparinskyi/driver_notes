@@ -3,7 +3,7 @@ from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button, Select
 
-from bot.states import GarageState, CarState
+from bot.states import GarageState, CarState, CarDataState
 from bot.utils import create_car, get_user_by_id, get_car_by_id
 from config import CURRENT_CAR_NAME_LENGTH
 
@@ -74,4 +74,13 @@ async def garage_rename_car(callback: CallbackQuery,
     car_id = int(dialog_manager.dialog_data.get("car_id"))
 
     await dialog_manager.start(state=CarState.edit_car_name,
+                               data={"car_id": car_id})
+
+
+async def garage_car_documents(callback: CallbackQuery,
+                               button: Button,
+                               dialog_manager: DialogManager):
+    car_id = int(dialog_manager.dialog_data.get("car_id"))
+
+    await dialog_manager.start(state=CarDataState.home,
                                data={"car_id": car_id})

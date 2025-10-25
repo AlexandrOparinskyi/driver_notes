@@ -44,4 +44,27 @@ async def getter_edit_part(i18n: TranslatorHub,
 
 async def getter_edit_car_name(i18n: TranslatorHub,
                                **kwargs) -> dict[str, str]:
-    return {"car_rename_text": i18n.car.rename.text()}
+    return {"car_rename_text": i18n.car.rename.text(),
+            "cancel_button": i18n.cancel.button()}
+
+
+async def getter_car_data_home(i18n: TranslatorHub,
+                               dialog_manager: DialogManager,
+                               **kwargs) -> dict[str, str]:
+    if dialog_manager.start_data:
+        dialog_manager.dialog_data.update(**dialog_manager.start_data)
+        dialog_manager.start_data.clear()
+
+    car_id = int(dialog_manager.dialog_data.get("car_id"))
+    car = await get_car_by_id(car_id)
+
+    data_documents_text = i18n.car.documents.text(
+        car_name=car.name,
+        vin="None",
+        car_number="None",
+        sts="None",
+        pts="None"
+    )
+
+    return {"data_documents_text": data_documents_text,
+            "back_button": i18n.back.button()}

@@ -96,3 +96,9 @@ async def car_rename(message: Message,
     await rename_car(car_id, message.text)
 
     await dialog_manager.done()
+
+
+async def back_button_to_garage(callback: CallbackQuery,
+                                button: Button,
+                                dialog_manager: DialogManager):
+    await dialog_manager.done()
