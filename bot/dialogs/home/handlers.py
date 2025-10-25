@@ -30,3 +30,9 @@ async def home_garage(callback: CallbackQuery,
                       button: Button,
                       dialog_manager: DialogManager):
     await dialog_manager.start(state=GarageState.home)
+
+
+async def home_add_param(callback: CallbackQuery,
+                      button: Button,
+                      dialog_manager: DialogManager):
+    await dialog_manager.start(state=HomeState.select_record)

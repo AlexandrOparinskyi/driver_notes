@@ -61,3 +61,13 @@ async def getter_home_get_instruction(i18n: TranslatorHub,
     return {"instruction_text": instruction.text,
             "home_button": i18n.home.button(),
             "back_button": i18n.back.button()}
+
+
+async def getter_home_select_record(i18n: TranslatorHub,
+                                    **kwargs) -> dict[str, str]:
+    return {"select_record_text": i18n.home.select.record.text(),
+            "refuel_button": i18n.home.refuel.button(),
+            "service_button": i18n.home.service.button(),
+            "purchase_button": i18n.home.purchase.button(),
+            "service_other_button": i18n.home.other.button(),
+            "home_button": i18n.home.button()}

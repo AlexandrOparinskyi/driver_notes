@@ -59,7 +59,7 @@ async def getter_car_data_home(i18n: TranslatorHub,
     car = await get_car_by_id(car_id)
 
     field_no_filled = i18n.field.no.filled()
-    spoiler = f"{field_no_filled}"
+    spoiler = f"<code>{field_no_filled}</code>"
 
     data_documents_text = i18n.car.documents.text(
         car_name=car.name,

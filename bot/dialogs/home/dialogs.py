@@ -6,11 +6,13 @@ from bot.states import HomeState
 from .getters import (getter_home,
                       getter_home_write_developer,
                       getter_home_instructions,
-                      getter_home_get_instruction)
+                      getter_home_get_instruction,
+                      getter_home_select_record)
 from .handlers import (home_write_developer,
                        home_instructions,
                        home_get_instruction,
-                       home_garage)
+                       home_garage,
+                       home_add_param)
 from ..general import (service_in_development,
                        home_button)
 
@@ -19,7 +21,7 @@ home_dialog = Dialog(
         Format("{home_text}"),
         Button(text=Format("{add_record_button}"),
                id="add_record_button",
-               on_click=service_in_development),
+               on_click=home_add_param),
         Row(Button(text=Format("{garage_button}"),
                    id="garage_button",
                    on_click=home_garage),
@@ -74,5 +76,25 @@ home_dialog = Dialog(
                on_click=home_button),
         getter=getter_home_get_instruction,
         state=HomeState.get_instruction
+    ),
+    Window(
+        Format("{select_record_text}"),
+        Row(Button(text=Format("{service_button}"),
+                   id="service_button",
+                   on_click=service_in_development),
+            Button(text=Format("{refuel_button}"),
+                   id="refuel_button",
+                   on_click=service_in_development)),
+        Row(Button(text=Format("{purchase_button}"),
+                   id="purchase_button",
+                   on_click=service_in_development),
+            Button(text=Format("{service_other_button}"),
+                   id="service_other_button",
+                   on_click=service_in_development)),
+        Button(text=Format("{home_button}"),
+               id="home_button",
+               on_click=home_button),
+        getter=getter_home_select_record,
+        state=HomeState.select_record
     )
 )

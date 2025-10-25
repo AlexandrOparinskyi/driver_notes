@@ -14,6 +14,7 @@ class HomeState(StatesGroup):
     write_developer = State()
     instructions = State()
     get_instruction = State()
+    select_record = State()
 
 
 class CarState(StatesGroup):
