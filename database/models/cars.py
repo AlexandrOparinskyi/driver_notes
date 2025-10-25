@@ -53,6 +53,21 @@ class Car(Base):
                         back_populates="cars",
                         lazy="joined")
 
+    @property
+    def to_dict(self) -> dict:
+        transmission = (self.transmission_type.name if
+                        self.transmission_type else None)
+        engine = self.engine_type.name if self.engine_type else None
+
+        return {"car_id": self.id,
+                "car_name": self.name,
+                "car_mark": self.mark,
+                "car_model": self.model,
+                "car_year": self.year,
+                "car_color": self.color,
+                "car_engine": engine,
+                "car_transmission": transmission}
+
 
 class CarMark(Base):
     __tablename__ = "car_marks"

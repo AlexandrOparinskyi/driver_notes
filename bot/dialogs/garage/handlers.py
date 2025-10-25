@@ -4,7 +4,7 @@ from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button, Select
 
 from bot.states import GarageState, CarState
-from bot.utils import create_car, get_user_by_id
+from bot.utils import create_car, get_user_by_id, get_car_by_id
 from config import CURRENT_CAR_NAME_LENGTH
 
 
@@ -56,3 +56,13 @@ async def garage_enter_car_name(message: Message,
 
     await dialog_manager.start(state=CarState.home,
                                data=dialog_manager.dialog_data)
+
+
+async def garage_car_edit_data(callback: CallbackQuery,
+                               button: Button,
+                               dialog_manager: DialogManager):
+    car_id = int(dialog_manager.dialog_data.get("car_id"))
+    car = await get_car_by_id(car_id)
+
+    await dialog_manager.start(CarState.home,
+                               data={"back_to_car": car.id, **car.to_dict})

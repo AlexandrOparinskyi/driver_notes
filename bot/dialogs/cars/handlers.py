@@ -67,4 +67,11 @@ async def car_save(callback: CallbackQuery,
         await dialog_manager.start(state=StartState.confirm)
         return
 
+    if dialog_manager.dialog_data.get("back_to_car"):
+        await dialog_manager.start(
+            state=GarageState.car_detail,
+            data={"car_id": dialog_manager.dialog_data.get("car_id")}
+        )
+        return
+
     await dialog_manager.start(state=GarageState.home)
