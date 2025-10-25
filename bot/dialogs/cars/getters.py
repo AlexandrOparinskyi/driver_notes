@@ -74,9 +74,3 @@ async def getter_car_data_home(i18n: TranslatorHub,
     return {"data_documents_text": data_documents_text,
             "back_button": i18n.back.button(),
             "add_documents_button": i18n.add.documents.button()}
-
-
-async def getter_edit_car_data(i18n: TranslatorHub,
-                               dialog_manager: DialogManager,
-                               **kwargs) -> dict[str, str]:
-    pass

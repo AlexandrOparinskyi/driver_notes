@@ -15,7 +15,7 @@ from .handlers import (garage_add_car,
                        garage_select_car,
                        garage_car_edit_data,
                        garage_rename_car,
-                       garage_car_documents)
+                       garage_car_documents, garage_delete_car)
 from ..general import (home_button,
                        generale_message_not_text,
                        service_in_development)
@@ -82,7 +82,7 @@ garage_dialog = Dialog(
                on_click=service_in_development),
         Button(text=Format("{delete_car_button}"),
                id="delete_car_button",
-               on_click=None),
+               on_click=garage_delete_car),
         Button(text=Format("{back_button}"),
                id="back_button_to_garage",
                on_click=back_button_to_garage),

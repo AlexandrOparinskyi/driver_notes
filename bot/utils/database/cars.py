@@ -75,6 +75,16 @@ async def update_car_by_id(car_id: str,
         await session.commit()
 
 
+async def delete_car_by_id(car_id: int) -> None:
+    async with get_async_session() as session:
+        await session.execute(update(Car).where(
+            Car.id == car_id
+        ).values(
+            is_deleted=True
+        ))
+        await session.commit()
+
+
 async def get_car_marks() -> list[CarMark]:
     async with get_async_session() as session:
         return await session.scalars(select(CarMark).order_by(

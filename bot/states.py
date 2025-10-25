@@ -24,7 +24,7 @@ class CarState(StatesGroup):
 
 class CarDataState(StatesGroup):
     home = State()
-    edit_menu = State()
+    edit_part = State()
 
 
 class GarageState(StatesGroup):

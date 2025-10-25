@@ -4,21 +4,21 @@ from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Group, Select, Button
 from aiogram_dialog.widgets.text import Format
 
+from bot.states import CarState, CarDataState
 from .filters import car_check_enter_part
 from .getters import (getter_car_home,
                       getter_edit_part,
                       getter_edit_car_name,
                       getter_car_data_home)
-from bot.states import CarState, CarDataState
 from .handlers import (car_edit_part,
                        car_back_button_home,
                        car_select_part,
                        car_enter_part,
                        car_save,
                        car_rename,
-                       back_button_to_garage,
-                       edit_car_data)
-from ..general import generale_message_not_text
+                       back_button_to_garage)
+from ..general import (generale_message_not_text,
+                       service_in_development)
 
 edit_car_dialog = Dialog(
     Window(
@@ -75,15 +75,11 @@ car_data_dialog = Dialog(
         Format("{data_documents_text}"),
         Button(text=Format("{add_documents_button}"),
                id="add_documents_button",
-               on_click=edit_car_data),
+               on_click=service_in_development),
         Button(text=Format("{back_button}"),
                id="back_button",
                on_click=back_button_to_garage),
         getter=getter_car_data_home,
         state=CarDataState.home,
-    ),
-    Window(
-
-        state=CarDataState.edit_menu
     )
 )
