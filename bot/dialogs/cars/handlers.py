@@ -3,7 +3,7 @@ from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Select, Button
 
-from bot.states import CarState, StartState, GarageState
+from bot.states import CarState, StartState, GarageState, CarDataState
 from bot.utils import (get_car_mark_by_id,
                        get_car_model_by_id,
                        update_car_by_id,
@@ -102,3 +102,9 @@ async def back_button_to_garage(callback: CallbackQuery,
                                 button: Button,
                                 dialog_manager: DialogManager):
     await dialog_manager.done()
+
+
+async def edit_car_data(callback: CallbackQuery,
+                        button: Button,
+                        dialog_manager: DialogManager):
+    await dialog_manager.switch_to(state=CarDataState.edit_menu)

@@ -16,7 +16,8 @@ from .handlers import (car_edit_part,
                        car_enter_part,
                        car_save,
                        car_rename,
-                       back_button_to_garage)
+                       back_button_to_garage,
+                       edit_car_data)
 from ..general import generale_message_not_text
 
 edit_car_dialog = Dialog(
@@ -72,10 +73,17 @@ edit_car_dialog = Dialog(
 car_data_dialog = Dialog(
     Window(
         Format("{data_documents_text}"),
+        Button(text=Format("{add_documents_button}"),
+               id="add_documents_button",
+               on_click=edit_car_data),
         Button(text=Format("{back_button}"),
                id="back_button",
                on_click=back_button_to_garage),
         getter=getter_car_data_home,
-        state=CarDataState.home
+        state=CarDataState.home,
+    ),
+    Window(
+
+        state=CarDataState.edit_menu
     )
 )
