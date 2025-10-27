@@ -84,8 +84,6 @@ car-documents-text =
     Страховка ОСАГО: <code>{ $insurance_number }</code>
     ⏱️ До конца страховки: { $insurance_days }
 
-field-no-filled = ✖️ Не заполнено
-
 
 car-mark-button = 🚗 Марка
 car-model-button = 🚙 Модель
@@ -94,7 +92,6 @@ car-year-button = 📅 Год
 car-mileage-button = 🛣️ Пробег
 car-engine-button = ⚙️ Двигатель
 car-transmission-button = 🔄 Коробка передач
-car-save-button = ✅ Закончить и сохранить
 
 black-color-text = ⚫ Черный
 white-color-text = ⬤ Белый

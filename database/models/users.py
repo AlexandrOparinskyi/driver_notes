@@ -18,8 +18,11 @@ class User(Base):
     is_banned: Mapped[bool] = mapped_column(default=False, nullable=False)
 
     cars = relationship("Car",
-                                     back_populates="user",
-                                     lazy="selectin")
+                        back_populates="user",
+                        lazy="selectin")
+    service_records = relationship("ServiceRecord",
+                                   back_populates="user",
+                                   lazy="selectin")
 
     @property
     def get_active_cars(self) -> list[Car]:

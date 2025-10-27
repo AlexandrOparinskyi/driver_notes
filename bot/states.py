@@ -33,3 +33,7 @@ class GarageState(StatesGroup):
     car_name = State()
     offer_premium = State()
     car_detail = State()
+
+
+class ServiceRecordState(StatesGroup):
+    home = State()

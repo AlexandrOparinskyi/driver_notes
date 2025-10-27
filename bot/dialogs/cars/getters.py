@@ -23,7 +23,7 @@ async def getter_car_home(i18n: TranslatorHub,
     return {"car_edit_menu_text": i18n.car.edit.menu.text(car_name=car.name,
                                                           car_data=car_data),
             "buttons": buttons,
-            "save_button": i18n.car.save.button()}
+            "save_button": i18n.save.button()}
 
 
 async def getter_edit_part(i18n: TranslatorHub,

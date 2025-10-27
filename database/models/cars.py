@@ -38,9 +38,6 @@ class Car(Base):
         Enum(TransmissionTypeEnum)
     )
     mileage: Mapped[int | None]
-    created_at: Mapped[datetime] = mapped_column(DateTime,
-                                                 server_default=func.now(),
-                                                 nullable=False)
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id',
                                                     ondelete='CASCADE'),
                                          nullable=False)
@@ -50,8 +47,10 @@ class Car(Base):
                                                    nullable=False)
 
     user = relationship("User",
-                        back_populates="cars",
-                        lazy="joined")
+                        back_populates="cars")
+    service_records = relationship("ServiceRecord",
+                                   back_populates="car",
+                                   lazy="selectin")
 
     @property
     def to_dict(self) -> dict:
@@ -88,4 +87,4 @@ class CarModel(Base):
                                          nullable=False)
     rating: Mapped[int] = mapped_column(default=0, nullable=False)
 
-    mark = relationship("CarMark", uselist=False, lazy="joined")
+    mark = relationship("CarMark", lazy="joined")

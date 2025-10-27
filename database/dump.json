@@ -1,0 +1,743 @@
+--
+-- PostgreSQL database dump
+--
+
+\restrict qxiBYQc7izakaZQli4h65PzFOVp0rU3ClUXcabVlTQ9UWm4RvIMvOR2aIqF4MfD
+
+-- Dumped from database version 16.10
+-- Dumped by pg_dump version 16.10
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: enginetypeenum; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.enginetypeenum AS ENUM (
+    'PETROL',
+    'DIESEL',
+    'ELECTRO',
+    'HYBRID',
+    'GAS'
+);
+
+
+ALTER TYPE public.enginetypeenum OWNER TO postgres;
+
+--
+-- Name: localetypeenum; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.localetypeenum AS ENUM (
+    'RU',
+    'EN'
+);
+
+
+ALTER TYPE public.localetypeenum OWNER TO postgres;
+
+--
+-- Name: servicetypeenum; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.servicetypeenum AS ENUM (
+    'REPLACEMENT',
+    'MAINTENANCE',
+    'DIAGNOSTICS',
+    'REPAIR',
+    'BODY_WORK',
+    'OTHER'
+);
+
+
+ALTER TYPE public.servicetypeenum OWNER TO postgres;
+
+--
+-- Name: transmissiontypeenum; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.transmissiontypeenum AS ENUM (
+    'AUTOMATIC',
+    'MANUAL',
+    'CVT',
+    'ROBOTIC'
+);
+
+
+ALTER TYPE public.transmissiontypeenum OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: alembic_version; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.alembic_version (
+    version_num character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.alembic_version OWNER TO postgres;
+
+--
+-- Name: car_marks; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.car_marks (
+    name character varying NOT NULL,
+    rating integer NOT NULL,
+    id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.car_marks OWNER TO postgres;
+
+--
+-- Name: car_marks_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.car_marks_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.car_marks_id_seq OWNER TO postgres;
+
+--
+-- Name: car_marks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.car_marks_id_seq OWNED BY public.car_marks.id;
+
+
+--
+-- Name: car_models; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.car_models (
+    name character varying NOT NULL,
+    mark_id integer NOT NULL,
+    rating integer NOT NULL,
+    id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.car_models OWNER TO postgres;
+
+--
+-- Name: car_models_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.car_models_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.car_models_id_seq OWNER TO postgres;
+
+--
+-- Name: car_models_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.car_models_id_seq OWNED BY public.car_models.id;
+
+
+--
+-- Name: cars; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cars (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    mark character varying,
+    model character varying,
+    year integer,
+    color character varying,
+    engine_type public.enginetypeenum,
+    transmission_type public.transmissiontypeenum,
+    mileage integer,
+    user_id bigint NOT NULL,
+    is_deleted boolean NOT NULL,
+    is_active boolean NOT NULL,
+    is_selected_main boolean NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.cars OWNER TO postgres;
+
+--
+-- Name: cars_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cars_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.cars_id_seq OWNER TO postgres;
+
+--
+-- Name: cars_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cars_id_seq OWNED BY public.cars.id;
+
+
+--
+-- Name: instructions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.instructions (
+    title character varying(100) NOT NULL,
+    locale public.localetypeenum NOT NULL,
+    text text NOT NULL,
+    id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.instructions OWNER TO postgres;
+
+--
+-- Name: instructions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.instructions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.instructions_id_seq OWNER TO postgres;
+
+--
+-- Name: instructions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.instructions_id_seq OWNED BY public.instructions.id;
+
+
+--
+-- Name: service_parts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.service_parts (
+    id integer NOT NULL,
+    service_record_id integer NOT NULL,
+    name character varying,
+    part_number character varying,
+    quantity integer NOT NULL,
+    price_per_unit numeric(20,2),
+    total_price numeric(20,2) NOT NULL,
+    comment character varying,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.service_parts OWNER TO postgres;
+
+--
+-- Name: service_parts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.service_parts_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.service_parts_id_seq OWNER TO postgres;
+
+--
+-- Name: service_parts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.service_parts_id_seq OWNED BY public.service_parts.id;
+
+
+--
+-- Name: service_records; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.service_records (
+    user_id bigint NOT NULL,
+    car_id integer,
+    title character varying,
+    description text,
+    total_price numeric(20,2),
+    service_type public.servicetypeenum NOT NULL,
+    service_center character varying,
+    service_date timestamp without time zone,
+    id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.service_records OWNER TO postgres;
+
+--
+-- Name: service_records_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.service_records_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.service_records_id_seq OWNER TO postgres;
+
+--
+-- Name: service_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.service_records_id_seq OWNED BY public.service_records.id;
+
+
+--
+-- Name: service_works; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.service_works (
+    id integer NOT NULL,
+    service_record_id integer NOT NULL,
+    name character varying,
+    description character varying,
+    price numeric(20,2) NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.service_works OWNER TO postgres;
+
+--
+-- Name: service_works_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.service_works_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.service_works_id_seq OWNER TO postgres;
+
+--
+-- Name: service_works_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.service_works_id_seq OWNED BY public.service_works.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id bigint NOT NULL,
+    username character varying,
+    first_name character varying NOT NULL,
+    last_name character varying,
+    is_premium boolean NOT NULL,
+    bonus_points integer NOT NULL,
+    is_banned boolean NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: car_marks id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.car_marks ALTER COLUMN id SET DEFAULT nextval('public.car_marks_id_seq'::regclass);
+
+
+--
+-- Name: car_models id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.car_models ALTER COLUMN id SET DEFAULT nextval('public.car_models_id_seq'::regclass);
+
+
+--
+-- Name: cars id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cars ALTER COLUMN id SET DEFAULT nextval('public.cars_id_seq'::regclass);
+
+
+--
+-- Name: instructions id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructions ALTER COLUMN id SET DEFAULT nextval('public.instructions_id_seq'::regclass);
+
+
+--
+-- Name: service_parts id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.service_parts ALTER COLUMN id SET DEFAULT nextval('public.service_parts_id_seq'::regclass);
+
+
+--
+-- Name: service_records id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.service_records ALTER COLUMN id SET DEFAULT nextval('public.service_records_id_seq'::regclass);
+
+
+--
+-- Name: service_works id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.service_works ALTER COLUMN id SET DEFAULT nextval('public.service_works_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.alembic_version (version_num) FROM stdin;
+d701656e4add
+\.
+
+
+--
+-- Data for Name: car_marks; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.car_marks (name, rating, id, created_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: car_models; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.car_models (name, mark_id, rating, id, created_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: cars; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cars (id, name, mark, model, year, color, engine_type, transmission_type, mileage, user_id, is_deleted, is_active, is_selected_main, created_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: instructions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.instructions (title, locale, text, id, created_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: service_parts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.service_parts (id, service_record_id, name, part_number, quantity, price_per_unit, total_price, comment, created_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: service_records; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.service_records (user_id, car_id, title, description, total_price, service_type, service_center, service_date, id, created_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: service_works; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.service_works (id, service_record_id, name, description, price, created_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (id, username, first_name, last_name, is_premium, bonus_points, is_banned, created_at) FROM stdin;
+\.
+
+
+--
+-- Name: car_marks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.car_marks_id_seq', 1, false);
+
+
+--
+-- Name: car_models_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.car_models_id_seq', 1, false);
+
+
+--
+-- Name: cars_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cars_id_seq', 1, false);
+
+
+--
+-- Name: instructions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.instructions_id_seq', 1, false);
+
+
+--
+-- Name: service_parts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.service_parts_id_seq', 1, false);
+
+
+--
+-- Name: service_records_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.service_records_id_seq', 1, false);
+
+
+--
+-- Name: service_works_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.service_works_id_seq', 1, false);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 1, false);
+
+
+--
+-- Name: alembic_version alembic_version_pkc; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.alembic_version
+    ADD CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num);
+
+
+--
+-- Name: car_marks car_marks_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.car_marks
+    ADD CONSTRAINT car_marks_name_key UNIQUE (name);
+
+
+--
+-- Name: car_marks car_marks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.car_marks
+    ADD CONSTRAINT car_marks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: car_models car_models_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.car_models
+    ADD CONSTRAINT car_models_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cars cars_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cars
+    ADD CONSTRAINT cars_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: instructions instructions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructions
+    ADD CONSTRAINT instructions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: service_parts service_parts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.service_parts
+    ADD CONSTRAINT service_parts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: service_records service_records_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.service_records
+    ADD CONSTRAINT service_records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: service_works service_works_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.service_works
+    ADD CONSTRAINT service_works_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: car_models unique_mark_model; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.car_models
+    ADD CONSTRAINT unique_mark_model UNIQUE (name, mark_id);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_username_key UNIQUE (username);
+
+
+--
+-- Name: car_models car_models_mark_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.car_models
+    ADD CONSTRAINT car_models_mark_id_fkey FOREIGN KEY (mark_id) REFERENCES public.car_marks(id) ON DELETE CASCADE;
+
+
+--
+-- Name: cars cars_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cars
+    ADD CONSTRAINT cars_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: service_parts service_parts_service_record_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.service_parts
+    ADD CONSTRAINT service_parts_service_record_id_fkey FOREIGN KEY (service_record_id) REFERENCES public.service_records(id) ON DELETE CASCADE;
+
+
+--
+-- Name: service_records service_records_car_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.service_records
+    ADD CONSTRAINT service_records_car_id_fkey FOREIGN KEY (car_id) REFERENCES public.cars(id) ON DELETE CASCADE;
+
+
+--
+-- Name: service_records service_records_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.service_records
+    ADD CONSTRAINT service_records_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: service_works service_works_service_record_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.service_works
+    ADD CONSTRAINT service_works_service_record_id_fkey FOREIGN KEY (service_record_id) REFERENCES public.service_records(id) ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\unrestrict qxiBYQc7izakaZQli4h65PzFOVp0rU3ClUXcabVlTQ9UWm4RvIMvOR2aIqF4MfD
+

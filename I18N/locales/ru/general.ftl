@@ -19,3 +19,5 @@ home-button = ♻️ В главное меню
 back-button = 🔙 Назад
 connect-premium-button = 💎 Перейти на Премиум
 cancel-button = ❌ Отмена
+save-button = ✅ Закончить и сохранить
+field-no-filled = ✖️ Не заполнено

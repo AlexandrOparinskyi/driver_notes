@@ -2,6 +2,7 @@ from .base import Base, LocaleTypeEnum
 from .users import User
 from .cars import *
 from .instructions import Instruction
+from .service_records import *
 
 __all__ = ["Base",
            "User",
@@ -11,4 +12,8 @@ __all__ = ["Base",
            "CarMark",
            "CarModel",
            "Instruction",
-           "LocaleTypeEnum"]
+           "LocaleTypeEnum",
+           "ServiceRecord",
+           "ServicePart",
+           "ServiceWork",
+           "ServiceTypeEnum"]

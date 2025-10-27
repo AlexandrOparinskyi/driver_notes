@@ -12,7 +12,8 @@ from .handlers import (home_write_developer,
                        home_instructions,
                        home_get_instruction,
                        home_garage,
-                       home_add_param)
+                       home_add_param,
+                       home_service_record)
 from ..general import (service_in_development,
                        home_button)
 
@@ -81,7 +82,7 @@ home_dialog = Dialog(
         Format("{select_record_text}"),
         Row(Button(text=Format("{service_button}"),
                    id="service_button",
-                   on_click=service_in_development),
+                   on_click=home_service_record),
             Button(text=Format("{refuel_button}"),
                    id="refuel_button",
                    on_click=service_in_development)),
