@@ -40,3 +40,8 @@ class ServiceRecordState(StatesGroup):
     edit_button = State()
     edit_text = State()
     calendar = State()
+
+
+class ServicePartState(StatesGroup):
+    home = State()
+    edit_param = State()

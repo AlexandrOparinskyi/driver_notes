@@ -5,7 +5,7 @@ from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button, Select
 
-from bot.states import ServiceRecordState, HomeState
+from bot.states import ServiceRecordState, HomeState, ServicePartState
 from bot.utils import create_service_record, update_mileage
 
 
@@ -84,3 +84,10 @@ async def service_record_save_button(callback: CallbackQuery,
         await update_mileage(car_id, int(mileage))
 
     await dialog_manager.start(state=HomeState.home)
+
+
+async def service_record_add_part(callback: CallbackQuery,
+                                  button: Button,
+                                  dialog_manager: DialogManager):
+    await dialog_manager.start(state=ServicePartState.home,
+                               data=dialog_manager.dialog_data)
