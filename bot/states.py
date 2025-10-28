@@ -37,3 +37,6 @@ class GarageState(StatesGroup):
 
 class ServiceRecordState(StatesGroup):
     home = State()
+    edit_button = State()
+    edit_text = State()
+    calendar = State()

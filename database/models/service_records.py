@@ -15,6 +15,17 @@ class ServiceTypeEnum(enum.Enum):
     BODY_WORK = "Кузовные работы"
     OTHER = "Другое"
 
+    def get_smile(self) -> str:
+        smiles = {
+            ServiceTypeEnum.REPLACEMENT: "🛠️",
+            ServiceTypeEnum.MAINTENANCE: "🔧",
+            ServiceTypeEnum.DIAGNOSTICS: "📊",
+            ServiceTypeEnum.REPAIR: "🔩",
+            ServiceTypeEnum.BODY_WORK: "🎨",
+            ServiceTypeEnum.OTHER: "❓"
+        }
+        return smiles.get(self, "⚙️")
+
 
 class ServiceRecord(Base):
     __tablename__ = "service_records"
@@ -32,7 +43,7 @@ class ServiceRecord(Base):
     title: Mapped[str | None]
     description: Mapped[str | None] = mapped_column(Text)
     total_price: Mapped[float | None] = mapped_column(Numeric(20, 2))
-    service_type: Mapped[ServiceTypeEnum] = mapped_column(
+    service_type: Mapped[ServiceTypeEnum | None] = mapped_column(
         Enum(ServiceTypeEnum)
     )
     service_center: Mapped[str | None]

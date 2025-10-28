@@ -1,9 +1,88 @@
-from aiogram.types import CallbackQuery
+from datetime import date
+
+from aiogram.types import CallbackQuery, Message
 from aiogram_dialog import DialogManager
-from aiogram_dialog.widgets.kbd import Button
+from aiogram_dialog.widgets.input import MessageInput
+from aiogram_dialog.widgets.kbd import Button, Select
+
+from bot.states import ServiceRecordState, HomeState
+from bot.utils import create_service_record, update_mileage
 
 
 async def service_record_back_to_select(callback: CallbackQuery,
                                         button: Button,
                                         dialog_manager: DialogManager):
     await dialog_manager.done()
+
+
+async def service_record_edit_part(callback: CallbackQuery,
+                                   widget: Select,
+                                   dialog_manager: DialogManager,
+                                   item_id: str):
+    dialog_manager.dialog_data.update(service_part=item_id)
+
+    if item_id in ("service_car", "service_type"):
+        await dialog_manager.switch_to(state=ServiceRecordState.edit_button)
+        return
+
+    if item_id == "service_date":
+        await dialog_manager.switch_to(state=ServiceRecordState.calendar)
+        return
+
+    await dialog_manager.switch_to(state=ServiceRecordState.edit_text)
+
+
+async def service_record_back_to_select_part(callback: CallbackQuery,
+                                             button: Button,
+                                             dialog_manager: DialogManager):
+    await dialog_manager.switch_to(state=ServiceRecordState.home)
+
+
+async def service_record_save_selected_part(callback: CallbackQuery,
+                                            widget: Select,
+                                            dialog_manager: DialogManager,
+                                            item_id: str):
+    service_part = dialog_manager.dialog_data.get("service_part")
+    dialog_manager.dialog_data[service_part] = item_id
+
+    await dialog_manager.switch_to(state=ServiceRecordState.home)
+
+
+async def service_record_save_enter_part(message: Message,
+                                         widget: MessageInput,
+                                         dialog_manager: DialogManager):
+    service_part = dialog_manager.dialog_data.get("service_part")
+    m_text = message.text
+
+    if service_part == "service_price":
+        m_text = m_text.replace(",", ".")
+
+    dialog_manager.dialog_data[service_part] = m_text
+
+    await dialog_manager.switch_to(state=ServiceRecordState.home)
+
+
+async def service_record_save_select_date(callback: CallbackQuery,
+                                          widget,
+                                          dialog_manager: DialogManager,
+                                          c_date: date):
+    service_part = dialog_manager.dialog_data.get("service_part")
+    dialog_manager.dialog_data[service_part] = c_date
+
+    await dialog_manager.switch_to(state=ServiceRecordState.home)
+
+
+async def service_record_save_button(callback: CallbackQuery,
+                                     button: Button,
+                                     dialog_manager: DialogManager):
+    service_id = await create_service_record(user_id=callback.from_user.id,
+                                             **dialog_manager.dialog_data)
+
+    mileage = dialog_manager.dialog_data.get("service_mileage")
+    if mileage:
+        car_id = int(dialog_manager.dialog_data.get("service_car"))
+        await update_mileage(car_id, int(mileage))
+
+    print(service_id)
+
+    await dialog_manager.start(state=HomeState.home)

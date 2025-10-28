@@ -19,16 +19,16 @@ async def car_check_enter_part(message: Message,
             if current_year < now_year or now_year < 1900:
                 dialog_manager.show_mode = ShowMode.NO_UPDATE
                 await message.answer("Not okay")
-                return
+                return False
         except ValueError:
             dialog_manager.show_mode = ShowMode.NO_UPDATE
             await message.answer("Not okay")
-            return
+            return False
 
     if car_part == "car_mileage":
         if not message.text.isdigit():
             dialog_manager.show_mode = ShowMode.NO_UPDATE
             await message.answer("Not okay")
-            return
+            return False
 
     return True
