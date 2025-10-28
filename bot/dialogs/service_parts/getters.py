@@ -37,4 +37,5 @@ async def getter_service_part_home(i18n: TranslatorHub,
 
 
 async def getter_service_part_edit_param(i18n: TranslatorHub,
-                                         **kwargs) -> dict[str, str]
+                                         **kwargs) -> dict[str, str]:
+    pass
