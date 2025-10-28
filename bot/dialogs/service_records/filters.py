@@ -15,9 +15,7 @@ async def service_record_check_text(message: Message,
         return True
 
     if service_part == "service_mileage":
-        print(1)
         if not message.text.isdigit():
-            print(2)
             dialog_manager.show_mode = ShowMode.NO_UPDATE
             await message.answer(
                 text=i18n.service.record.edit.mileage.error.text()
@@ -25,6 +23,12 @@ async def service_record_check_text(message: Message,
             return False
 
     if service_part == "service_price":
+        if message.text[0] == "-":
+            dialog_manager.show_mode = ShowMode.NO_UPDATE
+            await message.answer(
+                text=i18n.service.record.edit.price.error.text()
+            )
+            return False
         try:
             float(message.text.replace(",", "."))
             return True
