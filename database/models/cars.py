@@ -74,7 +74,9 @@ class Car(Base):
 
     @property
     def get_recent_activities(self) -> list:
-        return self.service_records
+        return list(sorted(self.service_records,
+                           key=lambda x: x.created_at,
+                           reverse=True))[:3]
 
 
 class CarMark(Base):

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from aiogram.types import User
 from aiogram_dialog import DialogManager
 from fluentogram import TranslatorHub
@@ -24,7 +26,8 @@ async def getter_service_record_home(i18n: TranslatorHub,
         if car:
             dialog_manager.dialog_data.update(service_car=car.id)
 
-    print(dialog_manager.dialog_data)
+    if not dialog_manager.dialog_data.get("service_date"):
+        dialog_manager.dialog_data.update(service_date=datetime.now())
 
     service_data = await get_text_for_service_data(
         i18n,

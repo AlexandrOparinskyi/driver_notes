@@ -4,7 +4,10 @@ from aiogram.types import User
 from aiogram_dialog import DialogManager
 from fluentogram import TranslatorHub
 
-from bot.utils import get_user_by_id, get_car_by_id, get_car_smile, get_recent_activities_car
+from bot.utils import (get_user_by_id,
+                       get_car_by_id,
+                       get_car_smile,
+                       get_recent_activities_car)
 from config import PREMIUM_PRICE
 
 
@@ -52,7 +55,8 @@ async def getter_car_detail(i18n: TranslatorHub,
     total_records = len(car.service_records)
     car_mileage = car.mileage if car.mileage else 0
     days_owned = (datetime.now() - car.created_at).days
-    recent_activities = get_recent_activities_car(i18n, car)
+    recent_activities = get_recent_activities_car(i18n,
+                                                  car.get_recent_activities)
     car_detail_text = i18n.car.details.text(
         car_name=f"{smile} {car.name}",
         total_expenses=total_expenses,

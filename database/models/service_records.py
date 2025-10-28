@@ -42,7 +42,9 @@ class ServiceRecord(Base):
 
     title: Mapped[str | None]
     description: Mapped[str | None] = mapped_column(Text)
-    total_price: Mapped[float | None] = mapped_column(Numeric(20, 2))
+    total_price: Mapped[float] = mapped_column(Numeric(20, 2),
+                                               nullable=False,
+                                               default=0)
     service_type: Mapped[ServiceTypeEnum | None] = mapped_column(
         Enum(ServiceTypeEnum)
     )

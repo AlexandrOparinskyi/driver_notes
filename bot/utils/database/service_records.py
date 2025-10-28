@@ -20,7 +20,7 @@ async def create_service_record(user_id: int,
         "description": service_description,
         "service_date": service_date,
         "service_center": service_name,
-        "total_price": float(service_price) if service_price else None,
+        "total_price": float(service_price) if service_price else 0,
         "service_type": s_type
     }
 

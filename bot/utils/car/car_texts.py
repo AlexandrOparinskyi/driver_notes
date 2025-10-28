@@ -2,7 +2,7 @@ from datetime import datetime
 
 from fluentogram import TranslatorHub
 
-from database import EngineTypeEnum, TransmissionTypeEnum, Car, ServiceRecord
+from database import EngineTypeEnum, TransmissionTypeEnum
 
 
 def get_text_for_edit_part(i18n: TranslatorHub,
@@ -53,34 +53,5 @@ def get_text_for_car_data(data: dict) -> str:
     if transmission:
         value = TransmissionTypeEnum[transmission].value
         text += f"<b>• 🔄 Коробка передач:</b> {value}\n"
-
-    return text
-
-
-def get_recent_activities_car(i18n: TranslatorHub,
-                              car: Car) -> str:
-    if not car.get_recent_activities:
-        return i18n.car.recent.activities.no.found()
-
-    text = ""
-
-    for i in car.get_recent_activities:
-        if isinstance(i, ServiceRecord):
-            if i.service_type:
-                s_type = (f"{i.service_type.get_smile()} "
-                          f"{i.service_type.value}")
-            else:
-                s_type = i18n.car.service.type()
-
-            if i.service_date:
-                s_date = i.service_date.strftime("%d.%m.%Y")
-            else:
-                s_date = i.created_at.strftime("%d.%m.%Y")
-
-            if i.total_price:
-                s_price = str(i.total_price)
-            else:
-                s_price = 0
-            text += f"{s_type} · {s_date} · {s_price} ₽\n"
 
     return text
