@@ -47,8 +47,11 @@ car-details-text =
     🛣️ Пробег: <b>{ $car_mileage } км</b>
     📅 В эксплуатации: <b>{ $days_owned } дней</b>
 
-    <b>⚙️ Последние работы:</b>
+    <b>⚙️ Последние действия авто:</b>
     { $recent_activities }
+
+car-recent-activities-no-found  = ✖️ Не найдено
+car-service-type = 🔧 Сервис
 
 
 add-car-button = ➕ Добавить машину
@@ -59,5 +62,6 @@ edit-car-documents-button = 📎 Документы
 car-report-button = 📈 Статистика
 setting-notification-button = 🔔 Настроить напоминания
 delete-car-button = 🗑️ Удалить из гаража
+
 
 

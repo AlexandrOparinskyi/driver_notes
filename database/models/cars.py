@@ -67,6 +67,15 @@ class Car(Base):
                 "car_engine": engine,
                 "car_transmission": transmission}
 
+    @property
+    def get_total_price(self) -> str:
+        return str(sum([s.total_price if s.total_price else 0
+                          for s in self.service_records]))
+
+    @property
+    def get_recent_activities(self) -> list:
+        return self.service_records
+
 
 class CarMark(Base):
     __tablename__ = "car_marks"

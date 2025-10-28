@@ -4,7 +4,7 @@ from aiogram.types import User
 from aiogram_dialog import DialogManager
 from fluentogram import TranslatorHub
 
-from bot.utils import get_user_by_id, get_car_by_id, get_car_smile
+from bot.utils import get_user_by_id, get_car_by_id, get_car_smile, get_recent_activities_car
 from config import PREMIUM_PRICE
 
 
@@ -48,16 +48,19 @@ async def getter_car_detail(i18n: TranslatorHub,
     car = await get_car_by_id(car_id)
     smile = get_car_smile()
 
-    total_expenses = 0
-    total_records = 0
+    total_expenses = car.get_total_price
+    total_records = len(car.service_records)
     car_mileage = car.mileage if car.mileage else 0
     days_owned = (datetime.now() - car.created_at).days
-    car_detail_text = i18n.car.details.text(car_name=f"{smile} {car.name}",
-                                            total_expenses=total_expenses,
-                                            total_records=total_records,
-                                            car_mileage=car_mileage,
-                                            days_owned=days_owned,
-                                            recent_activities="None")
+    recent_activities = get_recent_activities_car(i18n, car)
+    car_detail_text = i18n.car.details.text(
+        car_name=f"{smile} {car.name}",
+        total_expenses=total_expenses,
+        total_records=total_records,
+        car_mileage=car_mileage,
+        days_owned=days_owned,
+        recent_activities=recent_activities
+    )
 
     return {"car_detail_text": car_detail_text,
             "back_button": i18n.back.button(),

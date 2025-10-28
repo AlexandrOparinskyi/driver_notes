@@ -83,6 +83,4 @@ async def service_record_save_button(callback: CallbackQuery,
         car_id = int(dialog_manager.dialog_data.get("service_car"))
         await update_mileage(car_id, int(mileage))
 
-    print(service_id)
-
     await dialog_manager.start(state=HomeState.home)
