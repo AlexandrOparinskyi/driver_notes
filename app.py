@@ -26,7 +26,7 @@ def custom_json_dumps(obj: Any) -> str:
 
     def default_encoder(o):
         if isinstance(o, (datetime, date)):
-            return {'__type__': 'datetime', 'value': o.strftime("%d.%m.%Y")}
+            return {"__type__": "datetime", "value": o.strftime("%d.%m.%Y")}
         return str(o)
 
     return json.dumps(obj, default=default_encoder, ensure_ascii=False)
@@ -36,7 +36,7 @@ def custom_json_loads(data: str) -> Any:
     """Custom deserialization with datetime recovery"""
 
     def object_hook(obj):
-        if '__type__' in obj and obj['__type__'] == 'datetime':
+        if "__type__" in obj and obj["__type__"] == "datetime":
             return datetime.strptime(obj.get("value"), "%d.%m.%Y")
         return obj
 

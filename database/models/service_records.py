@@ -93,9 +93,9 @@ class ServicePart(Base):
 
     name: Mapped[str | None]
     part_number: Mapped[str | None]
-    quantity: Mapped[int]
+    quantity: Mapped[float | None]
     price_per_unit: Mapped[float | None] = mapped_column(Numeric(20, 2))
-    total_price: Mapped[float] = mapped_column(Numeric(20, 2))
+    total_price: Mapped[float | None] = mapped_column(Numeric(20, 2))
     comment: Mapped[str | None]
 
     service_record = relationship("ServiceRecord",

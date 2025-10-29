@@ -43,5 +43,6 @@ class ServiceRecordState(StatesGroup):
 
 
 class ServicePartState(StatesGroup):
+    enter_name = State()
     home = State()
     edit_param = State()

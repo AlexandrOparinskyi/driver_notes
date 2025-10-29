@@ -2,6 +2,7 @@ from .users import *
 from .cars import *
 from .instructions import *
 from .service_records import *
+from .service_parts import *
 
 __all__ = ["get_user_by_id",
            "create_user",
@@ -17,4 +18,5 @@ __all__ = ["get_user_by_id",
            "rename_car",
            "update_mileage",
            "delete_car_by_id",
-           "create_service_record"]
+           "create_service_record",
+           "create_service_parts"]
