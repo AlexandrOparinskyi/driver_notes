@@ -17,7 +17,8 @@ from .handlers import (service_record_back_to_select,
                        service_record_save_enter_part,
                        service_record_save_select_date,
                        service_record_save_button,
-                       service_record_add_part)
+                       service_record_add_part,
+                       service_record_add_work)
 from ..general import (service_in_development,
                        generale_message_not_text)
 
@@ -29,7 +30,7 @@ service_record_dialog = Dialog(
                on_click=service_record_add_part),
         Button(text=Format("{add_work_button}"),
                id="add_work_button",
-               on_click=service_in_development),
+               on_click=service_record_add_work),
         Group(Select(text=Format("{item[0]}"),
                      id="select_service_record_part",
                      item_id_getter=lambda x: x[1],

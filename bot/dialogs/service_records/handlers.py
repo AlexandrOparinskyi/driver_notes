@@ -5,10 +5,14 @@ from aiogram_dialog import DialogManager, StartMode
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button, Select
 
-from bot.states import ServiceRecordState, HomeState, ServicePartState
+from bot.states import (ServiceRecordState,
+                        HomeState,
+                        ServicePartState,
+                        ServiceWorkState)
 from bot.utils import (create_service_record,
                        update_mileage,
-                       create_service_parts)
+                       create_service_parts,
+                       create_service_works)
 
 
 async def service_record_back_to_select(callback: CallbackQuery,
@@ -92,6 +96,11 @@ async def service_record_save_button(callback: CallbackQuery,
         for value in service_part_data.values():
             await create_service_parts(service_id, value)
 
+    service_work_data = dialog_manager.dialog_data.get("work_data")
+    if service_work_data:
+        for value in service_work_data.values():
+            await create_service_works(service_id, value)
+
     await dialog_manager.start(state=HomeState.home)
 
 
@@ -104,4 +113,16 @@ async def service_record_add_part(callback: CallbackQuery,
         return
 
     await dialog_manager.start(state=ServicePartState.enter_name,
+                               data=dialog_manager.dialog_data)
+
+
+async def service_record_add_work(callback: CallbackQuery,
+                                  button: Button,
+                                  dialog_manager: DialogManager):
+    if dialog_manager.dialog_data.get("work_data"):
+        await dialog_manager.start(state=ServiceWorkState.home,
+                                       data=dialog_manager.dialog_data)
+        return
+
+    await dialog_manager.start(state=ServiceWorkState.enter_name,
                                data=dialog_manager.dialog_data)

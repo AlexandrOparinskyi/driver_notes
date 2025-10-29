@@ -73,7 +73,7 @@ class ServiceWork(Base):
         nullable=False
     )
 
-    name: Mapped[str | None]
+    name: Mapped[str]
     description: Mapped[str | None]
     price: Mapped[float] = mapped_column(Numeric(20, 2))
 
