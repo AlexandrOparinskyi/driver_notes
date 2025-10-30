@@ -80,4 +80,16 @@ async def getter_home_donate(i18n: TranslatorHub,
 
     return {"donate_text": i18n.home.donate.text(),
             "home_button": i18n.home.button(),
-            "price_buttons": price_buttons}
+            "price_buttons": price_buttons,
+            "home_donate_start_button": i18n.home.donate.stars.button()}
+
+
+async def getter_home_donate_start(i18n: TranslatorHub,
+                                   **kwargs) -> dict[str, str | list]:
+    stars_button = [(5, 5), (10, 10), (20, 20),
+                    (50, 50), (100, 100), (500, 500)]
+
+    return {"donate_text": i18n.home.donate.text(),
+            "home_button": i18n.home.button(),
+            "stars_button": stars_button,
+            "home_donate_rubles_button": i18n.home.donate.rubles.button()}

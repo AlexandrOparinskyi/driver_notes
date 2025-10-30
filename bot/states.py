@@ -16,6 +16,7 @@ class HomeState(StatesGroup):
     get_instruction = State()
     select_record = State()
     donate = State()
+    donate_stars = State()
 
 
 class CarState(StatesGroup):

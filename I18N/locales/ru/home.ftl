@@ -136,3 +136,6 @@ home-refuel-button = ⛽ Заправка
 home-service-button = 🔧 Сервис
 home-purchase-button = 🛒 Покупка
 home-other-button = 📝 Другое
+
+home-donate-stars-button = ⭐ Поддержать звездами Telegram
+home-donate-rubles-button = 💳 Поддержать рублями
