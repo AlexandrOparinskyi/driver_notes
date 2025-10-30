@@ -100,10 +100,11 @@ async def getter_home_get_payment_link(i18n: TranslatorHub,
                                        dialog_manager: DialogManager,
                                        **kwargs) -> dict[str, str | list]:
     link = dialog_manager.dialog_data.get("payment_link")
-    amount = dialog_manager.dialog_data.get("amount")
+    amount = float(dialog_manager.dialog_data.get("amount"))
 
-    text = i18n.home.donate.payment.text(amount=amount)
+    text = i18n.home.donate.payment.text(amount=f"{amount:.2f}")
     return {"donate_payment_text": text,
-            "pay_button": i18n.home.payment.button(amount=amount),
+            "pay_button": i18n.home.payment.button(amount=f"{amount:.2f}"),
             "link": link,
+            "back_button": i18n.back.button(),
             "home_button": i18n.home.button()}
