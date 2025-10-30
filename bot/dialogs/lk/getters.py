@@ -22,7 +22,6 @@ async def getter_lk_home(i18n: TranslatorHub,
             "connect_premium_button": i18n.lk.connect.premium.button(),
             "add_friend_button": i18n.lk.add.friend.button(),
             "change_language_button": i18n.lk.change.language.button(),
-            "documents_button": i18n.lk.documents.button(),
             "export_button": i18n.lk.export.button()}
 
 

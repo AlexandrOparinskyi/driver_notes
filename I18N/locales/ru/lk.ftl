@@ -34,8 +34,7 @@ lk-change-language-text =
 
 lk-add-friend-button = 🤝 Позвать друзей
 lk-change-language-button = 🌐 Изменить язык
-lk-documents-button = 📁 Мои документы
-lk-export-button = 📤 Экспорт данных
+lk-export-button = 📤 Экспорт отчетов
 lk-connect-premium-button = 💎 Подключить премиум
 
 lk-copy-link-button = 🔄 Я хочу скопировать ссылку

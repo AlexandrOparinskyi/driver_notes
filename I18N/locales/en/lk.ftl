@@ -33,7 +33,6 @@ lk-change-language-text =
 
 lk-add-friend-button = 🤝 Invite Friends
 lk-change-language-button = 🌐 Change Language
-lk-documents-button = 📁 My Documents
 lk-export-button = 📤 Export Data
 lk-connect-premium-button = 💎 Get Premium
 
