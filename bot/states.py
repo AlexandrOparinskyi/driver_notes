@@ -52,3 +52,9 @@ class ServiceWorkState(StatesGroup):
     enter_name = State()
     home = State()
     edit_param = State()
+
+
+class LkStates(StatesGroup):
+    home = State()
+    invite_friend = State()
+    change_language = State()

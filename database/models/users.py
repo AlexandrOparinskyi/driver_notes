@@ -1,7 +1,7 @@
-from sqlalchemy import BigInteger
+from sqlalchemy import BigInteger, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import Base
+from .base import Base, LocaleTypeEnum
 from .cars import Car
 
 
@@ -16,6 +16,9 @@ class User(Base):
     is_premium: Mapped[bool] = mapped_column(default=False, nullable=False)
     bonus_points: Mapped[int] = mapped_column(default=0, nullable=False)
     is_banned: Mapped[bool] = mapped_column(default=False, nullable=False)
+
+    locale: Mapped[LocaleTypeEnum] = mapped_column(Enum(LocaleTypeEnum),
+                                                   default=LocaleTypeEnum.RU)
 
     cars = relationship("Car",
                         back_populates="user",

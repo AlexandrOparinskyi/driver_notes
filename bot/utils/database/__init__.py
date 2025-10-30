@@ -21,4 +21,6 @@ __all__ = ["get_user_by_id",
            "delete_car_by_id",
            "create_service_record",
            "create_service_parts",
-           "create_service_works"]
+           "create_service_works",
+           "add_bonus_points_user",
+           "change_user_locale"]
