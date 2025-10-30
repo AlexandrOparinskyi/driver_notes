@@ -1,5 +1,7 @@
+from aiogram.enums import ContentType
 from aiogram_dialog import Dialog, Window
-from aiogram_dialog.widgets.kbd import Button, Row, Url, Select, Column
+from aiogram_dialog.widgets.input import MessageInput
+from aiogram_dialog.widgets.kbd import Button, Row, Url, Select, Column, Group
 from aiogram_dialog.widgets.text import Format
 
 from bot.states import HomeState
@@ -7,16 +9,20 @@ from .getters import (getter_home,
                       getter_home_write_developer,
                       getter_home_instructions,
                       getter_home_get_instruction,
-                      getter_home_select_record)
+                      getter_home_select_record,
+                      getter_home_donate)
 from .handlers import (home_write_developer,
                        home_instructions,
                        home_get_instruction,
                        home_garage,
                        home_add_param,
                        home_service_record,
-                       home_lk)
+                       home_lk,
+                       home_donate,
+                       create_donate_payments_btn,
+                       create_donate_payments_msg)
 from ..general import (service_in_development,
-                       home_button)
+                       home_button, generale_message_not_text)
 
 home_dialog = Dialog(
     Window(
@@ -38,7 +44,7 @@ home_dialog = Dialog(
                    on_click=service_in_development)),
         Button(text=Format("{support_project_button}"),
                id="support_project_button",
-               on_click=service_in_development),
+               on_click=home_donate),
         Button(text=Format("{write_developer_button}"),
                id="write_developer_button",
                on_click=home_write_developer),
@@ -98,5 +104,26 @@ home_dialog = Dialog(
                on_click=home_button),
         getter=getter_home_select_record,
         state=HomeState.select_record
+    ),
+    Window(
+        Format("{donate_text}"),
+        MessageInput(func=create_donate_payments_msg,
+                     content_types=ContentType.TEXT),
+        MessageInput(func=generale_message_not_text,
+                     content_types=[ContentType.VIDEO,
+                                    ContentType.PHOTO,
+                                    ContentType.DOCUMENT,
+                                    ContentType.STICKER]),
+        Group(Select(text=Format("{item[0]} ₽"),
+                     id="price_sum",
+                     item_id_getter=lambda x: x[1],
+                     items="price_buttons",
+                     on_click=create_donate_payments_btn),
+              width=3),
+        Button(text=Format("{home_button}"),
+               id="home_button",
+               on_click=home_button),
+        getter=getter_home_donate,
+        state=HomeState.donate
     )
 )

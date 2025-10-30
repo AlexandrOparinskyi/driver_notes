@@ -1,6 +1,6 @@
-from aiogram import Router
+from aiogram import Router, F
 from aiogram.filters import Command, CommandObject
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from aiogram_dialog import DialogManager, StartMode
 
 from bot.states import StartState, HomeState
@@ -38,5 +38,12 @@ async def command_start(message: Message,
                                    mode=StartMode.RESET_STACK)
         return
 
+    await dialog_manager.start(state=HomeState.home,
+                               mode=StartMode.RESET_STACK)
+
+
+@start_router.callback_query(F.data == "home_button")
+async def command_home_cb(callback: CallbackQuery,
+                          dialog_manager: DialogManager):
     await dialog_manager.start(state=HomeState.home,
                                mode=StartMode.RESET_STACK)

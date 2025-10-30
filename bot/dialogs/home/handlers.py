@@ -1,8 +1,10 @@
-from aiogram.types import CallbackQuery
-from aiogram_dialog import DialogManager
+from aiogram.types import CallbackQuery, Message
+from aiogram_dialog import DialogManager, ShowMode
+from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button, Select
 
 from bot.states import HomeState, GarageState, ServiceRecordState, LkStates
+from bot.utils import create_payment
 
 
 async def home_write_developer(callback: CallbackQuery,
@@ -39,12 +41,52 @@ async def home_add_param(callback: CallbackQuery,
 
 
 async def home_service_record(callback: CallbackQuery,
-                         button: Button,
-                         dialog_manager: DialogManager):
+                              button: Button,
+                              dialog_manager: DialogManager):
     await dialog_manager.start(state=ServiceRecordState.home)
 
 
 async def home_lk(callback: CallbackQuery,
-                         button: Button,
-                         dialog_manager: DialogManager):
+                  button: Button,
+                  dialog_manager: DialogManager):
     await dialog_manager.start(state=LkStates.home)
+
+
+async def home_donate(callback: CallbackQuery,
+                      button: Button,
+                      dialog_manager: DialogManager):
+    await dialog_manager.switch_to(state=HomeState.donate)
+
+
+async def create_donate_payments_btn(callback: CallbackQuery,
+                                     widget: Select,
+                                     dialog_manager: DialogManager,
+                                     item_id: str):
+    await create_payment(callback.from_user.id,
+                         dialog_manager.middleware_data.get("bot"),
+                         int(item_id),
+                         dialog_manager.middleware_data.get("i18n"))
+
+
+async def create_donate_payments_msg(message: Message,
+                                     widget: MessageInput,
+                                     dialog_manager: DialogManager):
+    i18n = dialog_manager.middleware_data.get("i18n")
+    dialog_manager.show_mode = ShowMode.NO_UPDATE
+
+    if not message.text.isdigit():
+        await message.answer(
+            text=i18n.donation.error.no.amount()
+        )
+        return
+
+    if int(message.text) < 100:
+        await message.answer(
+            text=i18n.donation.error.below.minimum(amount=message.text)
+        )
+        return
+
+    await create_payment(message.from_user.id,
+                         dialog_manager.middleware_data.get("bot"),
+                         int(message.text) * 100,
+                         i18n)

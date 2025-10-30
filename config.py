@@ -33,11 +33,17 @@ class RedisConfig:
 
 
 @dataclass
+class YouKassa:
+    token: str
+
+
+@dataclass
 class Config:
     tg_bot: TgBot
     db: Db
     admin_panel: AdminPanel
     redis: RedisConfig
+    you_kassa: YouKassa
 
 
 def load_config(path: str | None = None) -> Config:
@@ -65,6 +71,9 @@ def load_config(path: str | None = None) -> Config:
             host=env.str("REDIS_HOST", "localhost"),
             port=env.int("REDIS_PORT", 6379),
             db=env.int("REDIS_DB", 0),
+        ),
+        you_kassa=YouKassa(
+            token=env.str("YOUKASSA_TOKEN")
         )
     )
 

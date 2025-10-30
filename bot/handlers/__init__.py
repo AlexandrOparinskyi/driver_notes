@@ -1,10 +1,13 @@
 from aiogram import Router
 
+from .payments import payment_router
 from .start import start_router
+
 
 
 def register_handlers(router: Router):
     router.include_router(start_router)
+    router.include_router(payment_router)
 
 
-__all__ = ["register_handlers"]
+__all__ = ["create_payment"]

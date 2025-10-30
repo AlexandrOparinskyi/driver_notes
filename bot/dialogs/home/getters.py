@@ -71,3 +71,13 @@ async def getter_home_select_record(i18n: TranslatorHub,
             "purchase_button": i18n.home.purchase.button(),
             "service_other_button": i18n.home.other.button(),
             "home_button": i18n.home.button()}
+
+
+async def getter_home_donate(i18n: TranslatorHub,
+                             **kwargs) -> dict[str, str | list]:
+    price_buttons = [(100, 10000), (200, 20000), (500, 50000),
+                     (1000, 100000), (2000, 200000), (5000, 500000)]
+
+    return {"donate_text": i18n.home.donate.text(),
+            "home_button": i18n.home.button(),
+            "price_buttons": price_buttons}
