@@ -1,8 +1,7 @@
 from aiogram import Router
 
-from .payments import payment_router
+from .payments import payment_router, process_success_rub_payment
 from .start import start_router
-
 
 
 def register_handlers(router: Router):
@@ -10,4 +9,4 @@ def register_handlers(router: Router):
     router.include_router(payment_router)
 
 
-__all__ = ["create_payment"]
+__all__ = ["process_success_rub_payment"]

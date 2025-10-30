@@ -34,8 +34,9 @@ async def add_bonus_points_user(user_id: int,
         user = await session.scalar(select(User).where(
             User.id == user_id
         ))
-        user.bonus_points += bonus_points
-        await session.commit()
+        if user is not None:
+            user.bonus_points += bonus_points
+            await session.commit()
 
 
 async def change_user_locale(user_id: int,
@@ -44,5 +45,6 @@ async def change_user_locale(user_id: int,
         user = await session.scalar(select(User).where(
             User.id == user_id
         ))
-        user.locale = LocaleTypeEnum[locale.upper()]
-        await session.commit()
+        if user is not None:
+            user.locale = LocaleTypeEnum[locale.upper()]
+            await session.commit()

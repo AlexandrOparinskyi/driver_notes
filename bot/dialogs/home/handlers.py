@@ -5,6 +5,7 @@ from aiogram_dialog.widgets.kbd import Button, Select
 
 from bot.states import HomeState, GarageState, ServiceRecordState, LkStates
 from bot.utils import create_payment, create_stars_payment
+from database import PaymentTypeEnum
 
 
 async def home_write_developer(callback: CallbackQuery,
@@ -68,10 +69,14 @@ async def create_donate_payments_btn(callback: CallbackQuery,
                                      widget: Select,
                                      dialog_manager: DialogManager,
                                      item_id: str):
-    await create_payment(callback.from_user.id,
-                         dialog_manager.middleware_data.get("bot"),
-                         int(item_id),
-                         dialog_manager.middleware_data.get("i18n"))
+    link = create_payment(callback.from_user.id,
+                          int(item_id),
+                          dialog_manager.middleware_data.get("i18n"),
+                          PaymentTypeEnum.DONATE)
+
+    dialog_manager.dialog_data.update(payment_link=link,
+                                      amount=item_id)
+    await dialog_manager.switch_to(state=HomeState.get_link)
 
 
 async def create_donate_payments_stars_btn(callback: CallbackQuery,
@@ -102,10 +107,14 @@ async def create_donate_payments_msg(message: Message,
         )
         return
 
-    await create_payment(message.from_user.id,
-                         dialog_manager.middleware_data.get("bot"),
-                         int(message.text) * 100,
-                         i18n)
+    link = create_payment(message.from_user.id,
+                          int(message.text),
+                          i18n,
+                          PaymentTypeEnum.DONATE)
+
+    dialog_manager.dialog_data.update(payment_link=link,
+                                      amount=message.text)
+    await dialog_manager.switch_to(state=HomeState.get_link)
 
 
 async def create_donate_payments_start_msg(message: Message,

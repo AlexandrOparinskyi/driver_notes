@@ -11,7 +11,8 @@ from .getters import (getter_home,
                       getter_home_get_instruction,
                       getter_home_select_record,
                       getter_home_donate,
-                      getter_home_donate_start)
+                      getter_home_donate_start,
+                      getter_home_get_payment_link)
 from .handlers import (home_write_developer,
                        home_instructions,
                        home_get_instruction,
@@ -156,5 +157,15 @@ home_dialog = Dialog(
                on_click=home_button),
         getter=getter_home_donate_start,
         state=HomeState.donate_stars
+    ),
+    Window(
+        Format("{donate_payment_text}"),
+        Url(text=Format("{pay_button}"),
+            url=Format("{link}")),
+        Button(text=Format("{home_button}"),
+               id="home_button",
+               on_click=home_button),
+        getter=getter_home_get_payment_link,
+        state=HomeState.get_link
     )
 )

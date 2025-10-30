@@ -35,6 +35,8 @@ class RedisConfig:
 @dataclass
 class YouKassa:
     token: str
+    secret_key: str
+    account_id: int
 
 
 @dataclass
@@ -73,7 +75,9 @@ def load_config(path: str | None = None) -> Config:
             db=env.int("REDIS_DB", 0),
         ),
         you_kassa=YouKassa(
-            token=env.str("YOUKASSA_TOKEN")
+            token=env.str("YOUKASSA_TOKEN"),
+            secret_key=env.str("YOUKASSA_SECRET_KEY"),
+            account_id=env.int("YOUKASSA_ACCOUNT_ID"),
         )
     )
 

@@ -26,6 +26,9 @@ class User(Base):
     service_records = relationship("ServiceRecord",
                                    back_populates="user",
                                    lazy="selectin")
+    payments = relationship("Payment",
+                            back_populates="user",
+                            lazy="selectin")
 
     @property
     def get_active_cars(self) -> list[Car]:

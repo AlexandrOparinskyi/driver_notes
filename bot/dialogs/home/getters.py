@@ -4,7 +4,8 @@ from aiogram.types import User
 from aiogram_dialog import DialogManager
 from fluentogram import TranslatorHub
 
-from bot.utils import get_user_by_id, get_instruction_by_locale, get_instruction_by_id
+from bot.utils import get_user_by_id, get_instruction_by_locale, \
+    get_instruction_by_id
 from config import Config, load_config
 
 
@@ -75,8 +76,8 @@ async def getter_home_select_record(i18n: TranslatorHub,
 
 async def getter_home_donate(i18n: TranslatorHub,
                              **kwargs) -> dict[str, str | list]:
-    price_buttons = [(100, 10000), (200, 20000), (500, 50000),
-                     (1000, 100000), (2000, 200000), (5000, 500000)]
+    price_buttons = [(100, 100), (200, 200), (500, 500),
+                     (1000, 1000), (2000, 2000), (5000, 5000)]
 
     return {"donate_text": i18n.home.donate.text(),
             "home_button": i18n.home.button(),
@@ -93,3 +94,16 @@ async def getter_home_donate_start(i18n: TranslatorHub,
             "home_button": i18n.home.button(),
             "stars_button": stars_button,
             "home_donate_rubles_button": i18n.home.donate.rubles.button()}
+
+
+async def getter_home_get_payment_link(i18n: TranslatorHub,
+                                       dialog_manager: DialogManager,
+                                       **kwargs) -> dict[str, str | list]:
+    link = dialog_manager.dialog_data.get("payment_link")
+    amount = dialog_manager.dialog_data.get("amount")
+
+    text = i18n.home.donate.payment.text(amount=amount)
+    return {"donate_payment_text": text,
+            "pay_button": i18n.home.payment.button(amount=amount),
+            "link": link,
+            "home_button": i18n.home.button()}

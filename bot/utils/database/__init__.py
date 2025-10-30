@@ -4,6 +4,7 @@ from .instructions import *
 from .service_records import *
 from .service_parts import *
 from .service_works import *
+from .payments import *
 
 __all__ = ["get_user_by_id",
            "create_user",
@@ -23,4 +24,6 @@ __all__ = ["get_user_by_id",
            "create_service_parts",
            "create_service_works",
            "add_bonus_points_user",
-           "change_user_locale"]
+           "change_user_locale",
+           "get_payment_by_id",
+           "create_payment_db"]

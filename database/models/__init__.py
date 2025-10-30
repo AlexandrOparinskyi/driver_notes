@@ -3,6 +3,7 @@ from .users import User
 from .cars import *
 from .instructions import Instruction
 from .service_records import *
+from .payments import *
 
 __all__ = ["Base",
            "User",
@@ -16,4 +17,6 @@ __all__ = ["Base",
            "ServiceRecord",
            "ServicePart",
            "ServiceWork",
-           "ServiceTypeEnum"]
+           "ServiceTypeEnum",
+           "Payment",
+           "PaymentTypeEnum"]
