@@ -4,24 +4,42 @@ from fluentogram import TranslatorHub
 def get_text_for_part_data(i18n: TranslatorHub,
                            data: dict) -> str:
     text = "\n"
+    quantity = data.get("part_quantity")
+    price = data.get("part_price")
+    ppu = data.get("part_price_per_unit")
+
+    if quantity:
+        quantity_float = (float(quantity.replace(",", "."))
+                          if isinstance(quantity, str) else float(quantity))
+
+        if price and not ppu:
+            price_float = (float(price.replace(",", "."))
+                           if isinstance(price, str) else float(price))
+            ppu = f"{price_float / quantity_float:.2f}"
+
+        if ppu and not price:
+            ppu_float = (float(ppu.replace(",", "."))
+                         if isinstance(ppu, str) else float(ppu))
+            price = f"{ppu_float * quantity_float:.2f}"
 
     name = data.get("part_name")
     if name:
         text += f"<b>{i18n.service.part.name.button()}:</b> {name}\n"
 
-    price = data.get("part_price")
     if price:
+        formatted_price = (float(price.replace(",", "."))
+                           if isinstance(price, str) else float(price))
         text += (f"<b>{i18n.service.part.price.button()}:</b> "
-                 f"{price.replace(',', '.')}\n")
+                 f"{formatted_price:.2f}\n")
 
-    quantity = data.get("part_quantity")
     if quantity:
         text += f"<b>{i18n.service.part.quantity.button()}:</b> {quantity}\n"
 
-    ppu = data.get("part_price_per_unit")
     if ppu:
+        formatted_ppu = (float(ppu.replace(",", "."))
+                         if isinstance(ppu, str) else float(ppu))
         text += (f"<b>{i18n.service.part.price.per.unit.button()}:</b> "
-                 f"{ppu.replace(',', '.')}\n")
+                 f"{formatted_ppu:.2f}\n")
 
     number = data.get("part_number")
     if number:

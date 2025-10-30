@@ -18,7 +18,8 @@ async def service_part_enter_name(message: Message,
                                   dialog_manager: DialogManager):
     part_data = dialog_manager.dialog_data.get("part_data", {})
     selected_part = f"part_{len(part_data)}"
-    part_data[selected_part] = {"part_name": message.text}
+    part_data[selected_part] = {"part_name": message.text,
+                                "part_quantity": "1"}
     dialog_manager.dialog_data.update(part_data=part_data,
                                       selected_part=selected_part)
 

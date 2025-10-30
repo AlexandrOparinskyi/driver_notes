@@ -107,6 +107,8 @@ service-record-edit-date-text =
 
     📅 <b>Выбери одну из предложенных дат:</b>
 
+service-record-part-text = 🛞 Добавлено запчастей
+service-record-work-text = 🔧 Добавлено работ
 
 service-car-button = 🚗 Автомобиль
 service-title-button = 🏷️ Название

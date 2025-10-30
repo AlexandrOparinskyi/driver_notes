@@ -8,6 +8,7 @@ async def get_text_for_service_data(i18n: TranslatorHub,
                                     data: dict) -> str:
 
     text = "\n"
+    total_price = 0
 
     title = data.get("service_title")
     if title:
@@ -24,9 +25,24 @@ async def get_text_for_service_data(i18n: TranslatorHub,
         elif car.mileage:
             text += f"<b>{i18n.service.mileage.button()}:</b> {car.mileage}\n"
 
+    part_data = data.get("part_data")
+    if part_data:
+        text += (f"<b>{i18n.service.record.part.text()}:</b> "
+                 f"{len(part_data)}\n")
+        total_price += sum([float(val.get("part_price", 0))
+                            for val in part_data.values()])
+
+    work_data = data.get("work_data")
+    if work_data:
+        text += (f"<b>{i18n.service.record.work.text()}:</b> "
+                 f"{len(work_data)}\n")
+        total_price += sum([float(val.get("work_price", 0))
+                            for val in work_data.values()])
+
     description = data.get("service_description")
     if description:
-        text += f"<b>{i18n.service.description.button()}:</b> {description}\n"
+        text += (f"<b>{i18n.service.description.button()}:</b>"
+                 f" {description[:30]}\n")
 
     date = data.get("service_date")
     if date:
@@ -40,7 +56,13 @@ async def get_text_for_service_data(i18n: TranslatorHub,
 
     price = data.get("service_price")
     if price:
-        text += f"<b>{i18n.service.price.button()}:</b> {price}\n"
+        float_price = (float(price.replace(",", "."))
+                       if isinstance(price, str) else float(price))
+        text += (f"<b>{i18n.service.price.button()}:</b> "
+                 f"{float_price:.2f} ₽\n")
+    elif total_price != 0:
+        text += (f"<b>{i18n.service.price.button()}:</b> "
+                 f"{float(total_price):.2f} ₽\n")
 
     name = data.get("service_name")
     if name:
