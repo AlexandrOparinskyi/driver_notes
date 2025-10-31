@@ -82,6 +82,7 @@ async def service_record_save_select_date(callback: CallbackQuery,
 async def service_record_save_button(callback: CallbackQuery,
                                      button: Button,
                                      dialog_manager: DialogManager):
+    i18n = dialog_manager.middleware_data.get("i18n")
     service_id = await create_service_record(user_id=callback.from_user.id,
                                              **dialog_manager.dialog_data)
 
@@ -101,6 +102,9 @@ async def service_record_save_button(callback: CallbackQuery,
         for value in service_work_data.values():
             await create_service_works(service_id, value)
 
+    await callback.answer(
+        text=i18n.service.record.success.added.text()
+    )
     await dialog_manager.start(state=HomeState.home)
 
 
