@@ -108,3 +108,12 @@ async def getter_home_get_payment_link(i18n: TranslatorHub,
             "link": link,
             "back_button": i18n.back.button(),
             "home_button": i18n.home.button()}
+
+
+async def getter_home_not_car(i18n: TranslatorHub,
+                              event_from_user: User,
+                              **kwargs) -> dict[str, str]:
+    return {"no_car_text": i18n.home.no.cars.text(),
+            "add_car_button": i18n.add.car.button(),
+            "garage_button": i18n.garage.button(),
+            "home_button": i18n.home.button()}

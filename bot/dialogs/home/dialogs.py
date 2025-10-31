@@ -12,7 +12,8 @@ from .getters import (getter_home,
                       getter_home_select_record,
                       getter_home_donate,
                       getter_home_donate_start,
-                      getter_home_get_payment_link)
+                      getter_home_get_payment_link,
+                      getter_home_not_car)
 from .handlers import (home_write_developer,
                        home_instructions,
                        home_get_instruction,
@@ -26,7 +27,8 @@ from .handlers import (home_write_developer,
                        home_donate_start,
                        create_donate_payments_start_msg,
                        create_donate_payments_stars_btn,
-                       home_refuel_record)
+                       home_refuel_record,
+                       home_add_car)
 from ..general import (service_in_development,
                        home_button, generale_message_not_text)
 
@@ -171,5 +173,19 @@ home_dialog = Dialog(
                on_click=home_button),
         getter=getter_home_get_payment_link,
         state=HomeState.get_link
+    ),
+    Window(
+        Format("{no_car_text}"),
+        Button(text=Format("{add_car_button}"),
+               id="add_car_button",
+               on_click=home_add_car),
+        Button(text=Format("{garage_button}"),
+               id="garage_button",
+               on_click=home_garage),
+        Button(text=Format("{home_button}"),
+               id="home_button",
+               on_click=home_button),
+        getter=getter_home_not_car,
+        state=HomeState.not_car
     )
 )

@@ -91,7 +91,8 @@ async def delete_car_by_id(car_id: int) -> None:
         await session.execute(update(Car).where(
             Car.id == car_id
         ).values(
-            is_deleted=True
+            is_deleted=True,
+            is_selected_main=False
         ))
         await session.commit()
 

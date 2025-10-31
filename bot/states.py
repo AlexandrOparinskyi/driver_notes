@@ -18,6 +18,7 @@ class HomeState(StatesGroup):
     donate = State()
     donate_stars = State()
     get_link = State()
+    not_car = State()
 
 
 class CarState(StatesGroup):

@@ -135,6 +135,13 @@ home-donate-payment-text =
 
 home-support-project = Support the "AutoDiary" Project
 
+home-no-cars-text =
+    ❌ <b>You don't have any cars in your garage yet!</b>
+
+    To add a record, you need to add a car first.
+
+    It only takes a minute! 🚗💨
+
 add-record-button = ✏️ Add Record
 garage-button = 🍺 Garage
 lk-button = 👤 Profile

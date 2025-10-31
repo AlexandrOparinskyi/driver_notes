@@ -4,7 +4,7 @@ from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button, Select
 
 from bot.states import HomeState, GarageState, ServiceRecordState, LkStates, RefuelRecordState
-from bot.utils import create_payment, create_stars_payment
+from bot.utils import create_payment, create_stars_payment, get_user_by_id
 from database import PaymentTypeEnum
 
 
@@ -38,6 +38,11 @@ async def home_garage(callback: CallbackQuery,
 async def home_add_param(callback: CallbackQuery,
                          button: Button,
                          dialog_manager: DialogManager):
+    user = await get_user_by_id(callback.from_user.id)
+    if not user.get_active_cars:
+        await dialog_manager.switch_to(state=HomeState.not_car)
+        return
+
     await dialog_manager.start(state=HomeState.select_record)
 
 
@@ -139,3 +144,9 @@ async def create_donate_payments_start_msg(message: Message,
                                dialog_manager.middleware_data.get("bot"),
                                int(message.text),
                                i18n)
+
+
+async def home_add_car(callback: CallbackQuery,
+                       button: Button,
+                       dialog_manager: DialogManager):
+    await dialog_manager.start(state=GarageState.car_name)
