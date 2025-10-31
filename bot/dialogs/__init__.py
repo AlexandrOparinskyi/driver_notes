@@ -4,6 +4,7 @@ from .cars import register_car_dialogs
 from .garage import register_garage_dialogs
 from .home import register_home_dialogs
 from .lk import register_lk_dialogs
+from .refuel_records import register_refuel_record_dialogs
 from .service_parts import register_service_part_dialogs
 from .service_works import register_service_work_dialogs
 from .start import register_start_dialogs
@@ -19,3 +20,4 @@ def register_dialogs(router: Router):
     register_service_part_dialogs(router)
     register_service_work_dialogs(router)
     register_lk_dialogs(router)
+    register_refuel_record_dialogs(router)

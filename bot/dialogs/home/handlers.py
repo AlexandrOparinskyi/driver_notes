@@ -3,7 +3,7 @@ from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button, Select
 
-from bot.states import HomeState, GarageState, ServiceRecordState, LkStates
+from bot.states import HomeState, GarageState, ServiceRecordState, LkStates, RefuelRecordState
 from bot.utils import create_payment, create_stars_payment
 from database import PaymentTypeEnum
 
@@ -45,6 +45,12 @@ async def home_service_record(callback: CallbackQuery,
                               button: Button,
                               dialog_manager: DialogManager):
     await dialog_manager.start(state=ServiceRecordState.home)
+
+
+async def home_refuel_record(callback: CallbackQuery,
+                              button: Button,
+                              dialog_manager: DialogManager):
+    await dialog_manager.start(state=RefuelRecordState.enter_price)
 
 
 async def home_lk(callback: CallbackQuery,

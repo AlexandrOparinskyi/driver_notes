@@ -107,6 +107,9 @@ service-record-edit-date-text =
 
     📅 <b>Выбери одну из предложенных дат:</b>
 
+service-record-success-added-text = ✅ Сервис успешно добавлен!
+
+
 service-record-part-text = 🛞 Добавлено запчастей
 service-record-work-text = 🔧 Добавлено работ
 

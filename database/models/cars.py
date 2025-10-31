@@ -51,6 +51,9 @@ class Car(Base):
     service_records = relationship("ServiceRecord",
                                    back_populates="car",
                                    lazy="selectin")
+    refuel_records = relationship("RefuelRecord",
+                                  back_populates="car",
+                                  lazy="selectin")
 
     @property
     def to_dict(self) -> dict:
@@ -70,11 +73,13 @@ class Car(Base):
     @property
     def get_total_price(self) -> str:
         return str(sum([s.total_price if s.total_price else 0
-                          for s in self.service_records]))
+                        for s in self.service_records]) +
+                   sum([r.total_price if r.total_price else 0
+                        for r in self.refuel_records]))
 
     @property
     def get_recent_activities(self) -> list:
-        return list(sorted(self.service_records,
+        return list(sorted(self.service_records + self.refuel_records,
                            key=lambda x: x.created_at,
                            reverse=True))[:3]
 

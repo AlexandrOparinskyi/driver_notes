@@ -20,6 +20,7 @@ def create_translator_hub() -> TranslatorHub:
                                f'{DIR_PATH}/ru/service_records.ftl',
                                f'{DIR_PATH}/ru/service_parts.ftl',
                                f'{DIR_PATH}/ru/service_works.ftl',
+                               f'{DIR_PATH}/ru/refuel_records.ftl',
                                f'{DIR_PATH}/ru/lk.ftl']),
             ),
             FluentTranslator(
@@ -33,6 +34,7 @@ def create_translator_hub() -> TranslatorHub:
                                f'{DIR_PATH}/en/garage.ftl',
                                f'{DIR_PATH}/en/service_records.ftl',
                                f'{DIR_PATH}/en/service_parts.ftl',
+                               f'{DIR_PATH}/en/refuel_records.ftl',
                                f'{DIR_PATH}/en/service_works.ftl',
                                f'{DIR_PATH}/en/lk.ftl']),
             ),

@@ -57,6 +57,14 @@ class ServiceWorkState(StatesGroup):
     edit_param = State()
 
 
+class RefuelRecordState(StatesGroup):
+    enter_price = State()
+    home = State()
+    edit_button = State()
+    edit_text = State()
+    calendar = State()
+
+
 class LkStates(StatesGroup):
     home = State()
     invite_friend = State()

@@ -25,7 +25,8 @@ from .handlers import (home_write_developer,
                        create_donate_payments_msg,
                        home_donate_start,
                        create_donate_payments_start_msg,
-                       create_donate_payments_stars_btn)
+                       create_donate_payments_stars_btn,
+                       home_refuel_record)
 from ..general import (service_in_development,
                        home_button, generale_message_not_text)
 
@@ -97,7 +98,7 @@ home_dialog = Dialog(
                    on_click=home_service_record),
             Button(text=Format("{refuel_button}"),
                    id="refuel_button",
-                   on_click=service_in_development)),
+                   on_click=home_refuel_record)),
         Row(Button(text=Format("{purchase_button}"),
                    id="purchase_button",
                    on_click=service_in_development),
