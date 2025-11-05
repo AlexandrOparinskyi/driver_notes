@@ -50,8 +50,6 @@ car-details-text =
     <b>⚙️ Recent Car Activities:</b>
     { $recent_activities }
 
-car-recent-activities-no-found = ✖️ Not found
-car-service-type = 🔧 Service
 
 add-car-button = ➕ Add Car
 

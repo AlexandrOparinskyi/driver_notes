@@ -50,9 +50,6 @@ car-details-text =
     <b>⚙️ Последние действия авто:</b>
     { $recent_activities }
 
-car-recent-activities-no-found  = ✖️ Не найдено
-car-service-type = 🔧 Сервис
-
 
 add-car-button = ➕ Добавить машину
 

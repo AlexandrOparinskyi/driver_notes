@@ -81,7 +81,7 @@ class Car(Base):
     def get_recent_activities(self) -> list:
         return list(sorted(self.service_records + self.refuel_records,
                            key=lambda x: x.created_at,
-                           reverse=True))[:3]
+                           reverse=True))
 
 
 class CarMark(Base):

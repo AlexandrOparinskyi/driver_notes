@@ -13,6 +13,19 @@ async def create_service_record(user_id: int,
                                 service_price: str | None = None,
                                 **kwargs) -> int | None:
     s_type = ServiceTypeEnum[service_type] if service_type else None
+
+    if service_price is None:
+        service_price = 0
+        print(kwargs)
+        if kwargs.get("part_data"):
+            service_price += sum(float(
+                i.get("part_price", 0)
+            ) for i in kwargs.get("part_data").values())
+        if kwargs.get("work_data"):
+            service_price += sum(float(
+                i.get("work_price", 0)
+            ) for i in kwargs.get("work_data").values())
+
     created_values = {
         "user_id": int(user_id),
         "car_id": int(service_car) if service_car else None,

@@ -14,6 +14,11 @@ service-developing-text = ⏳ This service is currently under development
 
 no-found-back = ◀️ I think I got confused, going back
 
+car-recent-activities-no-found = ✖️ No records found
+car-service-type = 🔧 Service
+car-refuel-type = ⛽ Refueling
+
+
 home-button = ♻️ To Main Menu
 back-button = 🔙 Back
 connect-premium-button = 💎 Upgrade to Premium
