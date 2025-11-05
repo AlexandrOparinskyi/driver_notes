@@ -16,7 +16,6 @@ async def create_service_record(user_id: int,
 
     if service_price is None:
         service_price = 0
-        print(kwargs)
         if kwargs.get("part_data"):
             service_price += sum(float(
                 i.get("part_price", 0)

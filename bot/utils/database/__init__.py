@@ -6,7 +6,7 @@ from .service_parts import *
 from .service_works import *
 from .payments import *
 from .refuel_records import *
-
+from .car_documents import *
 __all__ = ["get_user_by_id",
            "create_user",
            "create_car",
@@ -28,4 +28,6 @@ __all__ = ["get_user_by_id",
            "change_user_locale",
            "get_payment_by_id",
            "create_payment_db",
-           "create_refuel_record"]
+           "create_refuel_record",
+           "create_car_documents",
+           "update_car_documents"]

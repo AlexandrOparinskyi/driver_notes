@@ -9,6 +9,7 @@ from .refuel_records import *
 __all__ = ["Base",
            "User",
            "Car",
+           "CarDocument",
            "EngineTypeEnum",
            "TransmissionTypeEnum",
            "CarMark",

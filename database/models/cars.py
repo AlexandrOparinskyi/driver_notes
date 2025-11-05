@@ -54,6 +54,10 @@ class Car(Base):
     refuel_records = relationship("RefuelRecord",
                                   back_populates="car",
                                   lazy="selectin")
+    car_documents = relationship("CarDocument",
+                                 back_populates="car",
+                                 uselist=False,
+                                 lazy="selectin")
 
     @property
     def to_dict(self) -> dict:
@@ -82,6 +86,23 @@ class Car(Base):
         return list(sorted(self.service_records + self.refuel_records,
                            key=lambda x: x.created_at,
                            reverse=True))
+
+
+class CarDocument(Base):
+    __tablename__ = "car_documents"
+
+    car_id: Mapped[int] = mapped_column(ForeignKey("cars.id",
+                                                   ondelete="cascade"),
+                                        unique=True,
+                                        nullable=False)
+    vin_number: Mapped[str | None]
+    gos_number: Mapped[str | None]
+    sts: Mapped[str | None]
+    pts: Mapped[str | None]
+    insurance_number: Mapped[str | None]
+    insurance_date: Mapped[datetime | None] = mapped_column(DateTime)
+
+    car = relationship("Car", back_populates="car_documents")
 
 
 class CarMark(Base):

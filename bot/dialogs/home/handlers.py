@@ -3,7 +3,11 @@ from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button, Select
 
-from bot.states import HomeState, GarageState, ServiceRecordState, LkStates, RefuelRecordState
+from bot.states import (HomeState, 
+                        GarageState,
+                        ServiceRecordState,
+                        LkStates,
+                        RefuelRecordState)
 from bot.utils import create_payment, create_stars_payment, get_user_by_id
 from database import PaymentTypeEnum
 

@@ -6,4 +6,6 @@ __all__ = ["get_button_for_add_car",
            "get_text_for_edit_part",
            "get_button_for_edit_car",
            "get_text_for_car_data",
-           "get_car_smile"]
+           "get_car_smile",
+           "get_buttons_for_edit_car_data",
+           "get_text_for_edit_car_doc_data"]

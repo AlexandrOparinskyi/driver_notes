@@ -55,3 +55,15 @@ def get_text_for_car_data(data: dict) -> str:
         text += f"<b>• 🔄 Коробка передач:</b> {value}\n"
 
     return text
+
+
+def get_text_for_edit_car_doc_data(i18n: TranslatorHub,
+                                   car_doc: str) -> str:
+    text_data = {
+        "vin_number": i18n.car.doc.add.vin.text(),
+        "sts": i18n.car.doc.add.cts.text(),
+        "pts": i18n.car.doc.add.pts.text(),
+        "gos_number": i18n.car.doc.add.license.text(),
+        "insurance_number": i18n.car.doc.add.osago.text(),
+    }
+    return text_data.get(car_doc, i18n.no.found.back())

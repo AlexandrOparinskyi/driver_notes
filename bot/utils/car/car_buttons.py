@@ -33,7 +33,7 @@ async def get_button_for_edit_car(i18n: TranslatorHub,
                   i18n.grey.color.text(),
                   i18n.red.color.text(),
                   i18n.blue.color.text(),
-                  i18n.brown.color.text(),]
+                  i18n.brown.color.text(), ]
         return [(c, c) for c in colors]
 
     elif part == "car_engine":
@@ -44,3 +44,13 @@ async def get_button_for_edit_car(i18n: TranslatorHub,
 
     else:
         return []
+
+
+def get_buttons_for_edit_car_data(i18n: TranslatorHub) -> list[tuple]:
+    return [
+        (i18n.car.documents.vin.button(), "vin_number"),
+        (i18n.car.documents.cts.button(), "sts"),
+        (i18n.car.documents.pts.button(), "pts"),
+        (i18n.car.documents.license.button(), "gos_number"),
+        (i18n.car.documents.osago.button(), "insurance_number"),
+    ]

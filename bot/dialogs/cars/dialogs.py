@@ -1,7 +1,7 @@
 from aiogram.enums import ContentType
 from aiogram_dialog import Dialog, Window
 from aiogram_dialog.widgets.input import MessageInput
-from aiogram_dialog.widgets.kbd import Group, Select, Button
+from aiogram_dialog.widgets.kbd import Group, Select, Button, Calendar
 from aiogram_dialog.widgets.text import Format
 
 from bot.states import CarState, CarDataState
@@ -9,16 +9,21 @@ from .filters import car_check_enter_part
 from .getters import (getter_car_home,
                       getter_edit_part,
                       getter_edit_car_name,
-                      getter_car_data_home)
+                      getter_car_data_home,
+                      getter_car_data_edit_docs,
+                      getter_car_data_calendar)
 from .handlers import (car_edit_part,
                        car_back_button_home,
                        car_select_part,
                        car_enter_part,
                        car_save,
                        car_rename,
-                       back_button_to_garage)
-from ..general import (generale_message_not_text,
-                       service_in_development)
+                       back_button_to_garage,
+                       back_button_to_car_documents,
+                       edit_car_data,
+                       enter_car_document,
+                       select_date_insurance)
+from ..general import generale_message_not_text
 
 edit_car_dialog = Dialog(
     Window(
@@ -73,13 +78,37 @@ edit_car_dialog = Dialog(
 car_data_dialog = Dialog(
     Window(
         Format("{data_documents_text}"),
-        Button(text=Format("{add_documents_button}"),
-               id="add_documents_button",
-               on_click=service_in_development),
+        Group(Select(text=Format("{item[0]}"),
+                     id="car_doc_buttons",
+                     item_id_getter=lambda x: x[1],
+                     items="buttons",
+                     on_click=edit_car_data),
+              width=3),
         Button(text=Format("{back_button}"),
                id="back_button",
                on_click=back_button_to_garage),
         getter=getter_car_data_home,
         state=CarDataState.home,
+    ),
+    Window(
+        Format("{edit_car_doc_text}"),
+        MessageInput(func=enter_car_document,
+                     content_types=ContentType.TEXT),
+        MessageInput(func=generale_message_not_text),
+        Button(text=Format("{back_button}"),
+               id="back_button",
+               on_click=back_button_to_car_documents),
+        getter=getter_car_data_edit_docs,
+        state=CarDataState.edit_documents
+    ),
+    Window(
+        Format("{date_text}"),
+        Calendar(id="insurance_calendar",
+                 on_click=select_date_insurance),
+        Button(text=Format("{skip_button}"),
+               id="skip_button",
+               on_click=back_button_to_car_documents),
+        getter=getter_car_data_calendar,
+        state=CarDataState.calendar
     )
 )

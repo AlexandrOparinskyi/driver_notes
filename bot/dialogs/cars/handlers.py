@@ -1,3 +1,5 @@
+from datetime import date
+
 from aiogram.types import CallbackQuery, Message
 from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
@@ -7,7 +9,7 @@ from bot.states import CarState, StartState, GarageState, CarDataState
 from bot.utils import (get_car_mark_by_id,
                        get_car_model_by_id,
                        update_car_by_id,
-                       rename_car)
+                       rename_car, update_car_documents)
 from config import CURRENT_CAR_NAME_LENGTH
 
 
@@ -105,6 +107,39 @@ async def back_button_to_garage(callback: CallbackQuery,
 
 
 async def edit_car_data(callback: CallbackQuery,
-                        button: Button,
-                        dialog_manager: DialogManager):
-    await dialog_manager.switch_to(state=CarDataState.edit_menu)
+                        widget: Select,
+                        dialog_manager: DialogManager,
+                        item_id: str):
+    dialog_manager.dialog_data.update(car_doc=item_id)
+
+    await dialog_manager.switch_to(state=CarDataState.edit_documents)
+
+
+async def back_button_to_car_documents(callback: CallbackQuery,
+                                       button: Button,
+                                       dialog_manager: DialogManager):
+    await dialog_manager.switch_to(state=CarDataState.home)
+
+
+async def enter_car_document(message: Message,
+                             widget: MessageInput,
+                             dialog_manager: DialogManager):
+    car_id = int(dialog_manager.dialog_data.get("car_id"))
+    car_doc = dialog_manager.dialog_data.get("car_doc")
+    await update_car_documents(car_id, car_doc, message.text)
+
+    if car_doc == "insurance_number":
+        await dialog_manager.switch_to(state=CarDataState.calendar)
+        return
+
+    await dialog_manager.switch_to(state=CarDataState.home)
+
+
+async def select_date_insurance(callback: CallbackQuery,
+                                widget,
+                                dialog_manager: DialogManager,
+                                select_date: date):
+    car_id = int(dialog_manager.dialog_data.get("car_id"))
+    await update_car_documents(car_id, "insurance_date", select_date)
+
+    await dialog_manager.switch_to(state=CarDataState.home)

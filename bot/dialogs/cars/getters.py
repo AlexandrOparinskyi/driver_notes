@@ -1,11 +1,12 @@
 from aiogram_dialog import DialogManager
+from asyncpg.pgproto.pgproto import timedelta
 from fluentogram import TranslatorHub
 
 from bot.utils import (get_car_by_id,
                        get_button_for_add_car,
                        get_text_for_edit_part,
                        get_button_for_edit_car,
-                       get_text_for_car_data)
+                       get_text_for_car_data, get_buttons_for_edit_car_data, get_text_for_edit_car_doc_data)
 
 
 async def getter_car_home(i18n: TranslatorHub,
@@ -50,7 +51,7 @@ async def getter_edit_car_name(i18n: TranslatorHub,
 
 async def getter_car_data_home(i18n: TranslatorHub,
                                dialog_manager: DialogManager,
-                               **kwargs) -> dict[str, str]:
+                               **kwargs) -> dict[str, str | list]:
     if dialog_manager.start_data:
         dialog_manager.dialog_data.update(**dialog_manager.start_data)
         dialog_manager.start_data.clear()
@@ -59,18 +60,44 @@ async def getter_car_data_home(i18n: TranslatorHub,
     car = await get_car_by_id(car_id)
 
     field_no_filled = i18n.field.no.filled()
-    spoiler = f"<code>{field_no_filled}</code>"
+    vin = (f"✅ <code>{car.car_documents.vin_number}</code>"
+           if car.car_documents.vin_number else field_no_filled)
+    sts = (f"✅ <code>{car.car_documents.sts}</code>"
+           if car.car_documents.sts else field_no_filled)
+    pts = (f"✅ <code>{car.car_documents.pts}</code>"
+                  if car.car_documents.pts else field_no_filled)
+    insurance = (f"✅ <code>{car.car_documents.insurance_number}</code>"
+                  if car.car_documents.insurance_number else field_no_filled)
+    gos_number = (f"✅ <code>{car.car_documents.gos_number}</code>"
+                  if car.car_documents.gos_number else field_no_filled)
 
     data_documents_text = i18n.car.documents.text(
         car_name=car.name,
-        vin=spoiler,
-        car_number=field_no_filled,
-        sts=field_no_filled,
-        pts=field_no_filled,
-        insurance_number=field_no_filled,
-        insurance_days=0
+        vin=vin,
+        car_number=gos_number,
+        sts=sts,
+        pts=pts,
+        insurance_number=insurance,
+        insurance_days="В разработке..."
     )
+    buttons = get_buttons_for_edit_car_data(i18n)
 
     return {"data_documents_text": data_documents_text,
             "back_button": i18n.back.button(),
-            "add_documents_button": i18n.add.documents.button()}
+            "buttons": buttons}
+
+
+async def getter_car_data_edit_docs(i18n: TranslatorHub,
+                                    dialog_manager: DialogManager,
+                                    **kwargs) -> dict[str, str]:
+    car_doc = dialog_manager.dialog_data.get("car_doc")
+    text = get_text_for_edit_car_doc_data(i18n, car_doc)
+
+    return {"edit_car_doc_text": text,
+            "back_button": i18n.back.button()}
+
+
+async def getter_car_data_calendar(i18n: TranslatorHub,
+                                   **kwargs) -> dict[str, str]:
+    return {"date_text": i18n.car.doc.add.osago.date.text(),
+            "skip_button": i18n.skip.button()}
