@@ -25,3 +25,4 @@ connect-premium-button = 💎 Upgrade to Premium
 cancel-button = ❌ Cancel
 save-button = ✅ Finish and Save
 field-no-filled = ✖️ Not filled
+skip-button = ⏩ Skip
