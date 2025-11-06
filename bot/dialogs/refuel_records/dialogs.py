@@ -19,7 +19,8 @@ from .handlers import (refuel_record_back_to_select_record,
                        refuel_record_edit_date,
                        refuel_record_edit_part,
                        refuel_record_enter_part,
-                       refuel_record_save)
+                       refuel_record_save,
+                       refuel_record_back_to_record)
 from ..general import (generale_message_not_text,
                        home_button)
 
@@ -56,6 +57,9 @@ refuel_record_dialog = Dialog(
         Button(text=Format("{save_button}"),
                id="save_button",
                on_click=refuel_record_save),
+        Button(text=Format("{back_button}"),
+               id="back_button",
+               on_click=refuel_record_back_to_record),
         Button(text=Format("{home_button}"),
                id="home_button",
                on_click=home_button),

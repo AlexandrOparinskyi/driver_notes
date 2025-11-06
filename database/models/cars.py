@@ -81,11 +81,17 @@ class Car(Base):
                    sum([r.total_price if r.total_price else 0
                         for r in self.refuel_records]))
 
-    @property
-    def get_recent_activities(self) -> list:
-        return list(sorted(self.service_records + self.refuel_records,
-                           key=lambda x: x.created_at,
-                           reverse=True))
+    def get_records(self,
+                    service: bool = True,
+                    refuel: bool = True,
+                    purchase: bool = True,
+                    other: bool = True) -> list:
+        records = []
+        if service:
+            records += self.service_records
+        if refuel:
+            records += self.refuel_records
+        return list(sorted(records, key=lambda x: x.created_at, reverse=True))
 
 
 class CarDocument(Base):

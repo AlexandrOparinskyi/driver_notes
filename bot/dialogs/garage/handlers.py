@@ -1,10 +1,11 @@
 from aiogram.types import CallbackQuery, Message
 from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
-from aiogram_dialog.widgets.kbd import Button, Select
+from aiogram_dialog.widgets.kbd import Button, Select, ManagedCheckbox
 
-from bot.states import GarageState, CarState, CarDataState
-from bot.utils import create_car, get_user_by_id, get_car_by_id, delete_car_by_id, create_car_documents
+from bot.states import GarageState, CarState, CarDataState, ServiceRecordState, RefuelRecordState
+from bot.utils import create_car, get_user_by_id, get_car_by_id, delete_car_by_id, create_car_documents, \
+    delete_service_by_id, delete_refuel_by_id, get_service_by_id, get_refuel_by_id
 from config import CURRENT_CAR_NAME_LENGTH
 
 
@@ -88,9 +89,130 @@ async def garage_car_documents(callback: CallbackQuery,
 
 
 async def garage_delete_car(callback: CallbackQuery,
-                               button: Button,
-                               dialog_manager: DialogManager):
+                            button: Button,
+                            dialog_manager: DialogManager):
     car_id = int(dialog_manager.dialog_data.get("car_id"))
     await delete_car_by_id(car_id)
 
-    await dialog_manager.switch_to(GarageState.home)
+    await dialog_manager.switch_to(state=GarageState.home)
+
+
+async def garage_get_records(callback: CallbackQuery,
+                             button: Button,
+                             dialog_manager: DialogManager):
+    dialog_manager.dialog_data.update(n="page_0")
+
+    await dialog_manager.switch_to(state=GarageState.car_records)
+
+
+async def back_button_to_car_detail(callback: CallbackQuery,
+                                    button: Button,
+                                    dialog_manager: DialogManager):
+    await dialog_manager.switch_to(state=GarageState.car_detail)
+
+
+async def garage_check_records_filter(callback: CallbackQuery,
+                                      checkbox: ManagedCheckbox,
+                                      dialog_manager: DialogManager):
+    key = checkbox.widget.widget_id
+    dialog_manager.dialog_data[key] = checkbox.is_checked()
+
+
+async def garage_next_button(callback: CallbackQuery,
+                             button: Button,
+                             dialog_manager: DialogManager):
+    n = int(dialog_manager.dialog_data.get("n").split("_")[1])
+    len_records = int(dialog_manager.dialog_data.get("len_records"))
+
+    if n + 1 >= len_records:
+        return
+
+    dialog_manager.dialog_data.update(n=f"page_{n + 1}")
+
+
+async def garage_prev_button(callback: CallbackQuery,
+                             button: Button,
+                             dialog_manager: DialogManager):
+    n = int(dialog_manager.dialog_data.get("n").split("_")[1])
+
+    if n == 0:
+        return
+
+    dialog_manager.dialog_data.update(n=f"page_{n - 1}")
+
+
+async def garage_select_record(callback: CallbackQuery,
+                               widget: Select,
+                               dialog_manager: DialogManager,
+                               item_id: str):
+    record, r_id = item_id.split("_")
+    dialog_manager.dialog_data.update(record_type=record,
+                                      record_id=r_id)
+
+    await dialog_manager.switch_to(state=GarageState.record)
+
+
+async def back_button_to_select_record(callback: CallbackQuery,
+                                       button: Button,
+                                       dialog_manager: DialogManager):
+    await dialog_manager.switch_to(state=GarageState.car_records)
+
+
+async def garage_delete_record(callback: CallbackQuery,
+                               button: Button,
+                               dialog_manager: DialogManager):
+    r_type = dialog_manager.dialog_data.get("record_type")
+    r_id = int(dialog_manager.dialog_data.get("record_id"))
+
+    if r_type == "service":
+        await delete_service_by_id(r_id)
+    if r_type == "refuel":
+        await delete_refuel_by_id(r_id)
+
+    await dialog_manager.switch_to(state=GarageState.car_records)
+
+
+async def garage_edit_record(callback: CallbackQuery,
+                             button: Button,
+                             dialog_manager: DialogManager):
+    r_type = dialog_manager.dialog_data.get("record_type")
+    r_id = int(dialog_manager.dialog_data.get("record_id"))
+    i18n = dialog_manager.middleware_data.get("i18n")
+    data = {}
+
+    if r_type == "service":
+        # service = await get_service_by_id(r_id)
+        # service_type = (service.service_type.name
+        #                 if service.service_type else None)
+        # data = {"service_car": service.car_id,
+        #         "service_title": service.title,
+        #         "service_description": service.description,
+        #         "service_date": service.service_date,
+        #         "service_type": service_type,
+        #         "service_price": service.total_price,
+        #         "service_name": service.service_center,
+        #         "record_edit": True}
+        # data.update(**dialog_manager.dialog_data)
+        # await dialog_manager.start(state=ServiceRecordState.home,
+        #                            data=data)
+        await callback.answer(
+            text=i18n.service.developing.text()
+        )
+        return
+
+    if r_type == "refuel":
+        refuel = await get_refuel_by_id(r_id)
+        r_type = refuel.fuel_type.name if refuel.fuel_type else None
+        r_stat = refuel.gas_station.name if refuel.gas_station else None
+        data = {"refuel_car": refuel.car_id,
+                "refuel_price": refuel.total_price,
+                "refuel_date": refuel.refuel_date,
+                "refuel_liters": refuel.liters,
+                "refuel_time": refuel.time,
+                "refuel_type": r_type,
+                "refuel_station": r_stat,
+                "refuel_edit": True}
+        data.update(**dialog_manager.dialog_data)
+        await dialog_manager.start(state=RefuelRecordState.home,
+                                   data=data)
+        return

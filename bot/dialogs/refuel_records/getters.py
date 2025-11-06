@@ -16,17 +16,28 @@ async def getter_refuel_record_enter_price(i18n: TranslatorHub,
 async def getter_refuel_record_home(i18n: TranslatorHub,
                                     dialog_manager: DialogManager,
                                     **kwargs) -> dict[str, str | list]:
+    if dialog_manager.start_data:
+        dialog_manager.dialog_data.update(**dialog_manager.start_data)
+        dialog_manager.start_data.clear()
+
     refuel_data = await get_text_for_refuel_data(i18n,
                                                  dialog_manager.dialog_data)
 
     home_text = i18n.refuel.record.home.text(refuel_data=refuel_data)
     buttons = get_buttons_for_edit_refuel_record(i18n)
 
+    home_button = i18n.home.button()
+    back_button = ""
+    if dialog_manager.dialog_data.get("refuel_edit"):
+        home_button = ""
+        back_button = i18n.back.button()
+
 
     return {"home_text": home_text,
             "save_button": i18n.save.button(),
             "buttons": buttons,
-            "home_button": i18n.home.button(),
+            "home_button": home_button,
+            "back_button": back_button,
             "full_tank_button": i18n.refuel.record.full.tank.button(),
             "no_full_tank_button": i18n.refuel.record.no.full.tank.button()}
 

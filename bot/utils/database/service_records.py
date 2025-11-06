@@ -1,4 +1,4 @@
-from sqlalchemy import insert
+from sqlalchemy import insert, select, delete
 
 from database import get_async_session, ServiceTypeEnum, ServiceRecord
 
@@ -44,3 +44,18 @@ async def create_service_record(user_id: int,
 
         result = query.scalar_one_or_none()
         return result
+
+
+async def get_service_by_id(service_id: int) -> ServiceRecord:
+    async with get_async_session() as session:
+        return await session.scalar(select(ServiceRecord).where(
+            ServiceRecord.id == service_id
+        ))
+
+
+async def delete_service_by_id(service_id: int) -> None:
+    async with get_async_session() as session:
+        await session.execute(delete(ServiceRecord).where(
+            ServiceRecord.id == service_id
+        ))
+        await session.commit()

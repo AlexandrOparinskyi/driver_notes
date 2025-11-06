@@ -56,6 +56,6 @@ add-car-button = ➕ Add Car
 edit-car-name-button = ✏️ Rename
 edit-car-data-button = 📝 Specifications
 edit-car-documents-button = 📎 Documents
-car-report-button = 📈 Statistics
+car-report-button = 📑 Records
 setting-notification-button = 🔔 Set Reminders
 delete-car-button = 🗑️ Remove from Garage

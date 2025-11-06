@@ -28,8 +28,8 @@ def get_last_records(i18n: TranslatorHub,
         if isinstance(i, RefuelRecord):
             r_date = i.refuel_date.strftime("%d.%m.%Y")
 
-            r_price = i.total_price if i.total_price else "0.00 ₽\n"
+            r_price = i.total_price if i.total_price else "0.00"
 
-            text += f"{i18n.car.refuel.type()} · {r_date} · {r_price}"
+            text += f"{i18n.car.refuel.type()} · {r_date} · {r_price}  ₽\n"
 
     return text

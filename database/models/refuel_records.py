@@ -46,4 +46,6 @@ class RefuelRecord(Base):
     full_tank: Mapped[bool | None]
     refuel_date: Mapped[datetime | None] = mapped_column(DateTime)
 
-    car = relationship("Car", back_populates="refuel_records")
+    car = relationship("Car",
+                       back_populates="refuel_records",
+                       lazy="joined")

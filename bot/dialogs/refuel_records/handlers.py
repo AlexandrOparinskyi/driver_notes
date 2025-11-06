@@ -5,8 +5,8 @@ from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button, Select, ManagedCheckbox
 
-from bot.states import HomeState, RefuelRecordState
-from bot.utils import get_user_by_id, get_car_by_id, create_refuel_record
+from bot.states import HomeState, RefuelRecordState, GarageState
+from bot.utils import get_user_by_id, get_car_by_id, create_refuel_record, update_refuel_record
 from database import EngineTypeEnum, FuelTypeEnum
 
 FUEL_TYPE_DATA = {
@@ -20,6 +20,13 @@ async def refuel_record_back_to_select_record(callback: CallbackQuery,
                                               button: Button,
                                               dialog_manager: DialogManager):
     await dialog_manager.start(state=HomeState.select_record)
+
+
+async def refuel_record_back_to_record(callback: CallbackQuery,
+                                              button: Button,
+                                              dialog_manager: DialogManager):
+    await dialog_manager.start(state=GarageState.record,
+                               data=dialog_manager.dialog_data)
 
 
 async def refuel_record_enter_price(message: Message,
@@ -114,6 +121,13 @@ async def refuel_record_enter_part(message: Message,
 async def refuel_record_save(callback: CallbackQuery,
                              button: Button,
                              dialog_manager: DialogManager):
+    if dialog_manager.dialog_data.get("refuel_edit"):
+        await update_refuel_record(**dialog_manager.dialog_data)
+
+        await dialog_manager.start(state=GarageState.record,
+                                   data=dialog_manager.dialog_data)
+        return
+
     await create_refuel_record(**dialog_manager.dialog_data)
 
     i18n = dialog_manager.middleware_data.get("i18n")

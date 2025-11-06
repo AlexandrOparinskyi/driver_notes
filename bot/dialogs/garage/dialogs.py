@@ -1,21 +1,32 @@
 from aiogram.enums import ContentType
 from aiogram_dialog import Dialog, Window
 from aiogram_dialog.widgets.input import MessageInput
-from aiogram_dialog.widgets.kbd import Button, Group, Select
+from aiogram_dialog.widgets.kbd import Button, Group, Select, Row, Checkbox
 from aiogram_dialog.widgets.text import Format
 
 from bot.states import GarageState
 from .getters import (getter_garage,
                       getter_car_name,
                       getter_car_offer_premium,
-                      getter_car_detail)
+                      getter_car_detail,
+                      getter_car_records,
+                      getter_garage_record)
 from .handlers import (garage_add_car,
                        back_button_to_garage,
                        garage_enter_car_name,
                        garage_select_car,
                        garage_car_edit_data,
                        garage_rename_car,
-                       garage_car_documents, garage_delete_car)
+                       garage_car_documents,
+                       garage_delete_car,
+                       back_button_to_car_detail,
+                       garage_get_records,
+                       garage_check_records_filter,
+                       garage_next_button,
+                       garage_prev_button,
+                       back_button_to_select_record,
+                       garage_select_record,
+                       garage_delete_record, garage_edit_record)
 from ..general import (home_button,
                        generale_message_not_text,
                        service_in_development)
@@ -65,17 +76,17 @@ garage_dialog = Dialog(
     Window(
         Format("{car_detail_text}"),
         Group(Button(text=Format("{edit_name_button}"),
-               id="edit_name_button",
-               on_click=garage_rename_car),
-        Button(text=Format("{edit_data_button}"),
-               id="edit_data_button",
-               on_click=garage_car_edit_data),
-        Button(text=Format("{edit_documents_button}"),
-               id="edit_documents_button",
-               on_click=garage_car_documents),
-        Button(text=Format("{get_report_button}"),
-               id="get_report_button",
-               on_click=service_in_development),
+                     id="edit_name_button",
+                     on_click=garage_rename_car),
+              Button(text=Format("{edit_data_button}"),
+                     id="edit_data_button",
+                     on_click=garage_car_edit_data),
+              Button(text=Format("{edit_documents_button}"),
+                     id="edit_documents_button",
+                     on_click=garage_car_documents),
+              Button(text=Format("{get_report_button}"),
+                     id="get_report_button",
+                     on_click=garage_get_records),
               width=2),
         Button(text=Format("{setting_notification_button}"),
                id="setting_notification_button",
@@ -88,5 +99,63 @@ garage_dialog = Dialog(
                on_click=back_button_to_garage),
         getter=getter_car_detail,
         state=GarageState.car_detail
+    ),
+    Window(
+        Format("{car_record_text}"),
+        Row(Checkbox(checked_text=Format("{active_service_button}"),
+                     unchecked_text=Format("{unactive_service_button}"),
+                     id="checked_service_filter",
+                     on_state_changed=garage_check_records_filter,
+                     default=True),
+            Checkbox(checked_text=Format("{active_refuel_button}"),
+                     unchecked_text=Format("{unactive_refuel_button}"),
+                     id="checked_refuel_filter",
+                     on_state_changed=garage_check_records_filter),
+            Checkbox(checked_text=Format("{active_purchase_button}"),
+                     unchecked_text=Format("{unactive_purchase_button}"),
+                     id="checked_purchase_filter",
+                     on_state_changed=garage_check_records_filter),
+            Checkbox(checked_text=Format("{active_other_button}"),
+                     unchecked_text=Format("{unactive_other_button}"),
+                     id="checked_other_filter",
+                     on_state_changed=garage_check_records_filter)
+            ),
+        Group(Select(text=Format("{item[0]}"),
+                     id="record_button",
+                     item_id_getter=lambda x: x[1],
+                     items="record_buttons",
+                     on_click=garage_select_record),
+              width=1),
+        Row(Button(text=Format("{prev_button}"),
+                   id="prev_button",
+                   on_click=garage_prev_button),
+            Button(text=Format("{count_button}"),
+                   id="count_button",
+                   on_click=None),
+            Button(text=Format("{next_button}"),
+                   id="next_button",
+                   on_click=garage_next_button)),
+        Button(text=Format("{back_button}"),
+               id="back_button_to_garage",
+               on_click=back_button_to_car_detail),
+        getter=getter_car_records,
+        state=GarageState.car_records
+    ),
+    Window(
+        Format("{record_text}"),
+        Row(Button(text=Format("{edit_button}"),
+                   id="edit_button",
+                   on_click=garage_edit_record),
+            Button(text=Format("{download_button}"),
+                   id="download_button",
+                   on_click=service_in_development)),
+        Button(text=Format("{delete_button}"),
+               id="delete_button",
+               on_click=garage_delete_record),
+        Button(text=Format("{back_button}"),
+               id="back_button_to_select_record",
+               on_click=back_button_to_select_record),
+        getter=getter_garage_record,
+        state=GarageState.record
     )
 )

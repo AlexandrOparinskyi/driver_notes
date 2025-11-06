@@ -54,7 +54,8 @@ class ServiceRecord(Base):
     user = relationship("User",
                         back_populates="service_records")
     car = relationship("Car",
-                       back_populates="service_records")
+                       back_populates="service_records",
+                       lazy="joined")
     service_works = relationship("ServiceWork",
                                  back_populates="service_record",
                                  lazy="selectin")

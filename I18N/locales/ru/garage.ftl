@@ -4,7 +4,6 @@ garage-text =
     Привет, { $username }! Здесь живут все твои железные кони.
 
     <b>Для каждой машины ты можешь:</b>
-    • 🚗 Добавлять машины
     • 📝 Редактировать данные
     • 📎 Добавлять документы (СТС, ОСАГО, VIN)
     • 📊 Смотреть детальную статистику расходов
@@ -50,15 +49,64 @@ car-details-text =
     <b>⚙️ Последние действия авто:</b>
     { $recent_activities }
 
-
 add-car-button = ➕ Добавить машину
 
 edit-car-name-button = ✏️ Переименовать
 edit-car-data-button = 📝 Характеристики
 edit-car-documents-button = 📎 Документы
-car-report-button = 📈 Статистика
+car-report-button = 📑 Записи
 setting-notification-button = 🔔 Настроить напоминания
 delete-car-button = 🗑️ Удалить из гаража
 
 
+car-records-text =
+    <b>📋 Записи автомобиля { $car_name }</b>
 
+    🔍 <b>Фильтр записей</b>
+    <i>Можно выбрать несколько типов для отображения</i>
+    🔧 Сервис       ⛽ Заправка
+    🛒 Покупка      📝 Другое
+
+    📊 <b>Всего записей: { $records_count }</b>
+
+    📅 <b>Выбери запись для просмотра:</b>
+
+garage-service-record-text =
+    <b>{ $service_name }</b>
+
+    🚗 { $car_name }
+    💰 Сумма: { $amount } ₽
+    🔧 Тип работ: { $service_type }
+    🏢 Сервисный центр: { $service_station }
+
+    💬 Описание работ:
+    { $description }
+
+garage-refuel-record-text =
+    <b>{ $refuel_name }</b>
+
+    🚗 { $car_name }
+    💰 Сумма: { $amount } ₽
+    ⛽ Тип топлива: { $fuel_type }
+    ⛽ Количество: { $fuel_volume }
+    🏭 АЗС: { $gas_station }
+
+
+garage-refuel-filter-text = ⛽ Заправка
+garage-service-filter-text = 🔧 Сервис
+garage-purchase-filter-text = 🛒 Покупка
+garage-other-filter-text = 📝 Другое
+
+
+active-refuel-button = ✅ ⛽
+active-service-button = ✅ 🔧
+active-purchase-button = ✅ 🛒
+active-other-button = ✅ 📝
+unactive-refuel-button = ❌ ⛽
+unactive-service-button = ❌ 🔧
+unactive-purchase-button = ❌ 🛒
+unactive-other-button = ❌ 📝
+
+garage-edit-record-button = ✏️ Редактировать
+garage-delete-record-button = 🗑️ Удалить запись
+garage-download-record-button = 📥 Экспорт в PDF
