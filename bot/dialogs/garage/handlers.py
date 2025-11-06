@@ -178,26 +178,48 @@ async def garage_edit_record(callback: CallbackQuery,
     r_type = dialog_manager.dialog_data.get("record_type")
     r_id = int(dialog_manager.dialog_data.get("record_id"))
     i18n = dialog_manager.middleware_data.get("i18n")
-    data = {}
 
     if r_type == "service":
-        # service = await get_service_by_id(r_id)
-        # service_type = (service.service_type.name
-        #                 if service.service_type else None)
-        # data = {"service_car": service.car_id,
-        #         "service_title": service.title,
-        #         "service_description": service.description,
-        #         "service_date": service.service_date,
-        #         "service_type": service_type,
-        #         "service_price": service.total_price,
-        #         "service_name": service.service_center,
-        #         "record_edit": True}
-        # data.update(**dialog_manager.dialog_data)
-        # await dialog_manager.start(state=ServiceRecordState.home,
-        #                            data=data)
-        await callback.answer(
-            text=i18n.service.developing.text()
-        )
+        service = await get_service_by_id(r_id)
+        service_type = (service.service_type.name
+                        if service.service_type else None)
+        data = {"service_car": service.car_id,
+                "service_title": service.title,
+                "service_description": service.description,
+                "service_date": service.service_date,
+                "service_type": service_type,
+                "service_price": service.total_price,
+                "service_name": service.service_center,
+                "service_edit": True}
+        data.update(**dialog_manager.dialog_data)
+        if service.service_parts:
+            part_data = {}
+            count = 0
+            for i in service.service_parts:
+                part_data[f"part_{count}"] = {
+                    "part_name": i.name,
+                    "part_price": i.total_price,
+                    "part_quantity": i.quantity,
+                    "part_price_per_unit": i.price_per_unit,
+                    "part_number": i.part_number,
+                    "part_comment": i.comment
+                }
+                count += 1
+            data["part_data"] = part_data
+            data["selected_part"] = "part_0"
+        if service.service_works:
+            work_data = {}
+            count = 0
+            for i in service.service_works:
+                work_data[f"work_{count}"] = {
+                    "work_name": i.name,
+                    "work_price": i.price,
+                    "work_description": i.description
+                }
+            data["work_data"] = work_data
+            data["selected_work"] = "work_0"
+        await dialog_manager.start(state=ServiceRecordState.home,
+                                   data=data)
         return
 
     if r_type == "refuel":

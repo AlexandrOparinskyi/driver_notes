@@ -8,7 +8,7 @@ from aiogram_dialog.widgets.kbd import Button, Select
 from bot.states import (ServiceRecordState,
                         HomeState,
                         ServicePartState,
-                        ServiceWorkState)
+                        ServiceWorkState, GarageState)
 from bot.utils import (create_service_record,
                        update_mileage,
                        create_service_parts,
@@ -18,6 +18,11 @@ from bot.utils import (create_service_record,
 async def service_record_back_to_select(callback: CallbackQuery,
                                         button: Button,
                                         dialog_manager: DialogManager):
+    if dialog_manager.dialog_data.get("service_edit"):
+        await dialog_manager.start(state=GarageState.record,
+                                   data=dialog_manager.dialog_data)
+        return
+
     await dialog_manager.start(state=HomeState.select_record,
                                mode=StartMode.RESET_STACK)
 
@@ -82,6 +87,12 @@ async def service_record_save_select_date(callback: CallbackQuery,
 async def service_record_save_button(callback: CallbackQuery,
                                      button: Button,
                                      dialog_manager: DialogManager):
+    if dialog_manager.dialog_data.get("service_edit"):
+        # Добавить сохранение сервиса + работ и запчастей
+        await dialog_manager.start(state=GarageState.record,
+                                   data=dialog_manager.dialog_data)
+        return
+
     i18n = dialog_manager.middleware_data.get("i18n")
     service_id = await create_service_record(user_id=callback.from_user.id,
                                              **dialog_manager.dialog_data)
