@@ -87,13 +87,14 @@ async def service_record_save_select_date(callback: CallbackQuery,
 async def service_record_save_button(callback: CallbackQuery,
                                      button: Button,
                                      dialog_manager: DialogManager):
+    i18n = dialog_manager.middleware_data.get("i18n")
+
     if dialog_manager.dialog_data.get("service_edit"):
-        # Добавить сохранение сервиса + работ и запчастей
+        await callback.answer("Сохранение ещё не добавлено!!!")
         await dialog_manager.start(state=GarageState.record,
                                    data=dialog_manager.dialog_data)
         return
 
-    i18n = dialog_manager.middleware_data.get("i18n")
     service_id = await create_service_record(user_id=callback.from_user.id,
                                              **dialog_manager.dialog_data)
 

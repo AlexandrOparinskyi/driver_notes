@@ -177,7 +177,6 @@ async def garage_edit_record(callback: CallbackQuery,
                              dialog_manager: DialogManager):
     r_type = dialog_manager.dialog_data.get("record_type")
     r_id = int(dialog_manager.dialog_data.get("record_id"))
-    i18n = dialog_manager.middleware_data.get("i18n")
 
     if r_type == "service":
         service = await get_service_by_id(r_id)
@@ -198,7 +197,7 @@ async def garage_edit_record(callback: CallbackQuery,
             for i in service.service_parts:
                 part_data[f"part_{count}"] = {
                     "part_name": i.name,
-                    "part_price": i.total_price,
+                    "part_price": i.total_price if i.total_price else 0,
                     "part_quantity": i.quantity,
                     "part_price_per_unit": i.price_per_unit,
                     "part_number": i.part_number,
@@ -213,7 +212,7 @@ async def garage_edit_record(callback: CallbackQuery,
             for i in service.service_works:
                 work_data[f"work_{count}"] = {
                     "work_name": i.name,
-                    "work_price": i.price,
+                    "work_price": i.price if i.price else 0,
                     "work_description": i.description
                 }
             data["work_data"] = work_data
