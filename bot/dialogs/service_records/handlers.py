@@ -90,7 +90,7 @@ async def service_record_save_button(callback: CallbackQuery,
     i18n = dialog_manager.middleware_data.get("i18n")
 
     if dialog_manager.dialog_data.get("service_edit"):
-        await callback.answer("Сохранение ещё не добавлено!!!")
+
         await dialog_manager.start(state=GarageState.record,
                                    data=dialog_manager.dialog_data)
         return
