@@ -4,9 +4,9 @@ from database import ServiceRecord, RefuelRecord
 
 
 def get_last_records(i18n: TranslatorHub,
-                           lst: list,
-                           count: int,) -> str:
-    not_fount_text = i18n.car.recent.activities.no.found()
+                     lst: list,
+                     count: int, ) -> str:
+    not_fount_text = i18n.car.recent.activities.no.found() + "\n"
 
     if not lst:
         return not_fount_text
@@ -23,13 +23,13 @@ def get_last_records(i18n: TranslatorHub,
             else:
                 s_type = i18n.car.service.type()
 
-            text += f"{s_type} · {s_date} · {i.total_price} ₽\n"
+            text += f"• {s_type} · {s_date} · {i.total_price} ₽\n"
 
         if isinstance(i, RefuelRecord):
             r_date = i.refuel_date.strftime("%d.%m.%Y")
 
             r_price = i.total_price if i.total_price else "0.00"
 
-            text += f"{i18n.car.refuel.type()} · {r_date} · {r_price}  ₽\n"
+            text += f"• {i18n.car.refuel.type()} · {r_date} · {r_price}  ₽\n"
 
     return text

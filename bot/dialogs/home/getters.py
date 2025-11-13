@@ -5,7 +5,7 @@ from aiogram_dialog import DialogManager
 from fluentogram import TranslatorHub
 
 from bot.utils import get_user_by_id, get_instruction_by_locale, \
-    get_instruction_by_id
+    get_instruction_by_id, get_last_records
 from config import Config, load_config
 
 
@@ -19,10 +19,15 @@ async def getter_home(i18n: TranslatorHub,
                i18n.home.motivation.phrase.five(),
                i18n.home.motivation.phrase.six()]
     user = await get_user_by_id(event_from_user.id)
+    print(user.get_records)
+    last_records = get_last_records(i18n,
+                                    user.get_records,
+                                    3)
 
     return {"home_text": i18n.home.text(username=user.first_name,
                                         motivation=random.choice(phrases),
-                                        car_count=len(user.get_active_cars)),
+                                        car_count=len(user.get_active_cars),
+                                        last_records=last_records),
             "add_record_button": i18n.add.record.button(),
             "garage_button": i18n.garage.button(),
             "lk_button": i18n.lk.button(),

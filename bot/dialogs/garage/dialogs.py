@@ -26,7 +26,9 @@ from .handlers import (garage_add_car,
                        garage_prev_button,
                        back_button_to_select_record,
                        garage_select_record,
-                       garage_delete_record, garage_edit_record)
+                       garage_delete_record,
+                       garage_edit_record,
+                       garage_generate_service_report)
 from ..general import (home_button,
                        generale_message_not_text,
                        service_in_development)
@@ -148,7 +150,7 @@ garage_dialog = Dialog(
                    on_click=garage_edit_record),
             Button(text=Format("{download_button}"),
                    id="download_button",
-                   on_click=service_in_development)),
+                   on_click=garage_generate_service_report)),
         Button(text=Format("{delete_button}"),
                id="delete_button",
                on_click=garage_delete_record),

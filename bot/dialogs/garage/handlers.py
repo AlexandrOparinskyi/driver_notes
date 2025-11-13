@@ -1,11 +1,24 @@
-from aiogram.types import CallbackQuery, Message
+from datetime import datetime
+
+from aiogram.types import CallbackQuery, Message, BufferedInputFile
 from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button, Select, ManagedCheckbox
 
-from bot.states import GarageState, CarState, CarDataState, ServiceRecordState, RefuelRecordState
-from bot.utils import create_car, get_user_by_id, get_car_by_id, delete_car_by_id, create_car_documents, \
-    delete_service_by_id, delete_refuel_by_id, get_service_by_id, get_refuel_by_id
+from bot.states import (GarageState,
+                        CarState,
+                        CarDataState,
+                        ServiceRecordState,
+                        RefuelRecordState)
+from bot.utils import (create_car,
+                       get_user_by_id,
+                       get_car_by_id,
+                       delete_car_by_id,
+                       create_car_documents,
+                       delete_service_by_id,
+                       delete_refuel_by_id,
+                       get_service_by_id,
+                       get_refuel_by_id, create_single_service_record_pdf)
 from config import CURRENT_CAR_NAME_LENGTH
 
 
@@ -244,3 +257,22 @@ async def garage_edit_record(callback: CallbackQuery,
         await dialog_manager.start(state=RefuelRecordState.home,
                                    data=data)
         return
+
+
+async def garage_generate_service_report(callback: CallbackQuery,
+                                         button: Button,
+                                         dialog_manager: DialogManager):
+    bot = dialog_manager.middleware_data.get("bot")
+    record_id = int(dialog_manager.dialog_data.get("record_id"))
+    pdf_buffer = await create_single_service_record_pdf(record_id)
+    filename = (f"service_report_{record_id}_"
+                f"{datetime.now().strftime('%Y%m%d_%H%M')}.pdf")
+    pdf_file = BufferedInputFile(
+        pdf_buffer.getvalue(),
+        filename=filename
+    )
+    await callback.answer("Отчет загружается...")
+    await bot.send_document(
+        chat_id=callback.from_user.id,
+        document=pdf_file
+    )

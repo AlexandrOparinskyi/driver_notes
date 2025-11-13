@@ -41,3 +41,10 @@ class User(Base):
                     if c.is_selected_main and not c.is_deleted][0]
         except IndexError:
             return None
+
+    @property
+    def get_records(self):
+        records = []
+        for car in self.get_active_cars:
+            records += car.get_records()
+        return records
