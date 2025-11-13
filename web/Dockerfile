@@ -6,6 +6,7 @@ COPY web/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY web/ ./web/
+COPY bot/ ./bot/
 COPY database/ ./database/
 COPY config.py .
 
