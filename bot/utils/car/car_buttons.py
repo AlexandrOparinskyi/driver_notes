@@ -23,7 +23,7 @@ async def get_button_for_edit_car(i18n: TranslatorHub,
         marks = await get_car_marks()
         return [(m.name, m.id) for m in marks]
 
-    elif part == "car_model":
+    elif part == "car_model" and mark_id:
         models = await get_car_models(mark_id)
         return [(m.name, m.id) for m in models]
 

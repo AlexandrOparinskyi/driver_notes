@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict qxiBYQc7izakaZQli4h65PzFOVp0rU3ClUXcabVlTQ9UWm4RvIMvOR2aIqF4MfD
+\restrict iqrDT76R4FcrzNyc8q4wyShAjLVPF2OEZGXZ0N4jmAxGnsgfOFQpGx3CtJ9WbHh
 
 -- Dumped from database version 16.10
 -- Dumped by pg_dump version 16.10
@@ -34,6 +34,40 @@ CREATE TYPE public.enginetypeenum AS ENUM (
 ALTER TYPE public.enginetypeenum OWNER TO postgres;
 
 --
+-- Name: fueltypeenum; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.fueltypeenum AS ENUM (
+    'PETROL_92',
+    'PETROL_95',
+    'PETROL_98',
+    'PETROL_100',
+    'DIESEL',
+    'GAS',
+    'ELECTRIC'
+);
+
+
+ALTER TYPE public.fueltypeenum OWNER TO postgres;
+
+--
+-- Name: gasstationtypeenum; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.gasstationtypeenum AS ENUM (
+    'LUKOIL',
+    'ROSNEFT',
+    'GAZPROMNEFT',
+    'TATNEFT',
+    'SHELL',
+    'BP',
+    'OTHER'
+);
+
+
+ALTER TYPE public.gasstationtypeenum OWNER TO postgres;
+
+--
 -- Name: localetypeenum; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -44,6 +78,18 @@ CREATE TYPE public.localetypeenum AS ENUM (
 
 
 ALTER TYPE public.localetypeenum OWNER TO postgres;
+
+--
+-- Name: paymenttypeenum; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.paymenttypeenum AS ENUM (
+    'DONATE',
+    'SUBSCRIBE'
+);
+
+
+ALTER TYPE public.paymenttypeenum OWNER TO postgres;
 
 --
 -- Name: servicetypeenum; Type: TYPE; Schema: public; Owner: postgres
@@ -89,6 +135,47 @@ CREATE TABLE public.alembic_version (
 
 
 ALTER TABLE public.alembic_version OWNER TO postgres;
+
+--
+-- Name: car_documents; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.car_documents (
+    car_id integer NOT NULL,
+    vin_number character varying,
+    gos_number character varying,
+    sts character varying,
+    pts character varying,
+    insurance_number character varying,
+    insurance_date timestamp without time zone,
+    id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.car_documents OWNER TO postgres;
+
+--
+-- Name: car_documents_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.car_documents_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.car_documents_id_seq OWNER TO postgres;
+
+--
+-- Name: car_documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.car_documents_id_seq OWNED BY public.car_documents.id;
+
 
 --
 -- Name: car_marks; Type: TABLE; Schema: public; Owner: postgres
@@ -247,6 +334,87 @@ ALTER SEQUENCE public.instructions_id_seq OWNED BY public.instructions.id;
 
 
 --
+-- Name: payments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.payments (
+    user_id bigint NOT NULL,
+    payment_id character varying NOT NULL,
+    payment_type public.paymenttypeenum NOT NULL,
+    status character varying(50) NOT NULL,
+    amount double precision NOT NULL,
+    id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.payments OWNER TO postgres;
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.payments_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.payments_id_seq OWNER TO postgres;
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.payments_id_seq OWNED BY public.payments.id;
+
+
+--
+-- Name: refuel_records; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.refuel_records (
+    car_id integer NOT NULL,
+    total_price numeric(20,2) NOT NULL,
+    liters double precision,
+    fuel_type public.fueltypeenum,
+    gas_station public.gasstationtypeenum,
+    "time" double precision,
+    full_tank boolean,
+    refuel_date timestamp without time zone,
+    id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.refuel_records OWNER TO postgres;
+
+--
+-- Name: refuel_records_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.refuel_records_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.refuel_records_id_seq OWNER TO postgres;
+
+--
+-- Name: refuel_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.refuel_records_id_seq OWNED BY public.refuel_records.id;
+
+
+--
 -- Name: service_parts; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -255,9 +423,9 @@ CREATE TABLE public.service_parts (
     service_record_id integer NOT NULL,
     name character varying,
     part_number character varying,
-    quantity integer NOT NULL,
+    quantity double precision,
     price_per_unit numeric(20,2),
-    total_price numeric(20,2) NOT NULL,
+    total_price numeric(20,2),
     comment character varying,
     created_at timestamp without time zone NOT NULL
 );
@@ -296,8 +464,8 @@ CREATE TABLE public.service_records (
     car_id integer,
     title character varying,
     description text,
-    total_price numeric(20,2),
-    service_type public.servicetypeenum NOT NULL,
+    total_price numeric(20,2) NOT NULL,
+    service_type public.servicetypeenum,
     service_center character varying,
     service_date timestamp without time zone,
     id integer NOT NULL,
@@ -336,7 +504,7 @@ ALTER SEQUENCE public.service_records_id_seq OWNED BY public.service_records.id;
 CREATE TABLE public.service_works (
     id integer NOT NULL,
     service_record_id integer NOT NULL,
-    name character varying,
+    name character varying NOT NULL,
     description character varying,
     price numeric(20,2) NOT NULL,
     created_at timestamp without time zone NOT NULL
@@ -379,7 +547,8 @@ CREATE TABLE public.users (
     is_premium boolean NOT NULL,
     bonus_points integer NOT NULL,
     is_banned boolean NOT NULL,
-    created_at timestamp without time zone NOT NULL
+    created_at timestamp without time zone NOT NULL,
+    locale public.localetypeenum NOT NULL
 );
 
 
@@ -404,6 +573,13 @@ ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: car_documents id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.car_documents ALTER COLUMN id SET DEFAULT nextval('public.car_documents_id_seq'::regclass);
 
 
 --
@@ -432,6 +608,20 @@ ALTER TABLE ONLY public.cars ALTER COLUMN id SET DEFAULT nextval('public.cars_id
 --
 
 ALTER TABLE ONLY public.instructions ALTER COLUMN id SET DEFAULT nextval('public.instructions_id_seq'::regclass);
+
+
+--
+-- Name: payments id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.payments ALTER COLUMN id SET DEFAULT nextval('public.payments_id_seq'::regclass);
+
+
+--
+-- Name: refuel_records id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.refuel_records ALTER COLUMN id SET DEFAULT nextval('public.refuel_records_id_seq'::regclass);
 
 
 --
@@ -467,7 +657,17 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-d701656e4add
+3bade3bed184
+\.
+
+
+--
+-- Data for Name: car_documents; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.car_documents (car_id, vin_number, gos_number, sts, pts, insurance_number, insurance_date, id, created_at) FROM stdin;
+5	17 символов	В011АХ 977	77 57 1295483	\N	Тест	2024-12-25 00:00:00	3	2025-11-05 15:01:13
+11	\N	\N	\N	\N	\N	\N	7	2025-11-13 14:05:20.576228
 \.
 
 
@@ -476,6 +676,30 @@ d701656e4add
 --
 
 COPY public.car_marks (name, rating, id, created_at) FROM stdin;
+Lada	0	55	2025-11-13 12:40:35.502116
+Kia	0	56	2025-11-13 12:40:35.502116
+Hyundai	0	57	2025-11-13 12:40:35.502116
+Renault	0	58	2025-11-13 12:40:35.502116
+Volkswagen	0	59	2025-11-13 12:40:35.502116
+Skoda	0	60	2025-11-13 12:40:35.502116
+Toyota	0	61	2025-11-13 12:40:35.502116
+Nissan	0	62	2025-11-13 12:40:35.502116
+BMW	0	63	2025-11-13 12:40:35.502116
+Mercedes-Benz	0	64	2025-11-13 12:40:35.502116
+Haval	0	65	2025-11-13 12:40:35.502116
+Chery	0	66	2025-11-13 12:40:35.502116
+Geely	0	67	2025-11-13 12:40:35.502116
+Changan	0	68	2025-11-13 12:40:35.502116
+Ford	0	69	2025-11-13 12:40:35.502116
+Chevrolet	0	70	2025-11-13 12:40:35.502116
+Mitsubishi	0	71	2025-11-13 12:40:35.502116
+Mazda	0	72	2025-11-13 12:40:35.502116
+Lexus	0	73	2025-11-13 12:40:35.502116
+Audi	0	74	2025-11-13 12:40:35.502116
+Subaru	0	75	2025-11-13 12:40:35.502116
+UAZ	0	76	2025-11-13 12:40:35.502116
+Volvo	0	77	2025-11-13 12:40:35.502116
+EXEED	0	78	2025-11-13 12:40:35.502116
 \.
 
 
@@ -484,6 +708,114 @@ COPY public.car_marks (name, rating, id, created_at) FROM stdin;
 --
 
 COPY public.car_models (name, mark_id, rating, id, created_at) FROM stdin;
+Granta	55	0	290	2025-11-13 12:40:35.502116
+Vesta	55	0	291	2025-11-13 12:40:35.502116
+Niva	55	0	292	2025-11-13 12:40:35.502116
+XRAY	55	0	293	2025-11-13 12:40:35.502116
+Largus	55	0	294	2025-11-13 12:40:35.502116
+Rio	56	0	295	2025-11-13 12:40:35.502116
+Sportage	56	0	296	2025-11-13 12:40:35.502116
+Seltos	56	0	297	2025-11-13 12:40:35.502116
+Sorento	56	0	298	2025-11-13 12:40:35.502116
+Cerato	56	0	299	2025-11-13 12:40:35.502116
+Creta	57	0	300	2025-11-13 12:40:35.502116
+Solaris	57	0	301	2025-11-13 12:40:35.502116
+Tucson	57	0	302	2025-11-13 12:40:35.502116
+Elantra	57	0	303	2025-11-13 12:40:35.502116
+Palisade	57	0	304	2025-11-13 12:40:35.502116
+Duster	58	0	305	2025-11-13 12:40:35.502116
+Logan	58	0	306	2025-11-13 12:40:35.502116
+Sandero	58	0	307	2025-11-13 12:40:35.502116
+Kaptur	58	0	308	2025-11-13 12:40:35.502116
+Arkana	58	0	309	2025-11-13 12:40:35.502116
+Polo	59	0	310	2025-11-13 12:40:35.502116
+Tiguan	59	0	311	2025-11-13 12:40:35.502116
+Taos	59	0	312	2025-11-13 12:40:35.502116
+Jetta	59	0	313	2025-11-13 12:40:35.502116
+Multivan	59	0	314	2025-11-13 12:40:35.502116
+Octavia	60	0	315	2025-11-13 12:40:35.502116
+Kodiaq	60	0	316	2025-11-13 12:40:35.502116
+Rapid	60	0	317	2025-11-13 12:40:35.502116
+Karoq	60	0	318	2025-11-13 12:40:35.502116
+Superb	60	0	319	2025-11-13 12:40:35.502116
+Camry	61	0	320	2025-11-13 12:40:35.502116
+RAV4	61	0	321	2025-11-13 12:40:35.502116
+Land Cruiser	61	0	322	2025-11-13 12:40:35.502116
+Corolla	61	0	323	2025-11-13 12:40:35.502116
+Highlander	61	0	324	2025-11-13 12:40:35.502116
+Qashqai	62	0	325	2025-11-13 12:40:35.502116
+X-Trail	62	0	326	2025-11-13 12:40:35.502116
+Murano	62	0	327	2025-11-13 12:40:35.502116
+Terrano	62	0	328	2025-11-13 12:40:35.502116
+Note	62	0	329	2025-11-13 12:40:35.502116
+X5	63	0	330	2025-11-13 12:40:35.502116
+X3	63	0	331	2025-11-13 12:40:35.502116
+X7	63	0	332	2025-11-13 12:40:35.502116
+3 Series	63	0	333	2025-11-13 12:40:35.502116
+5 Series	63	0	334	2025-11-13 12:40:35.502116
+E-Class	64	0	335	2025-11-13 12:40:35.502116
+GLC	64	0	336	2025-11-13 12:40:35.502116
+S-Class	64	0	337	2025-11-13 12:40:35.502116
+GLE	64	0	338	2025-11-13 12:40:35.502116
+C-Class	64	0	339	2025-11-13 12:40:35.502116
+F7	65	0	340	2025-11-13 12:40:35.502116
+Jolion	65	0	341	2025-11-13 12:40:35.502116
+H9	65	0	342	2025-11-13 12:40:35.502116
+Dargo	65	0	343	2025-11-13 12:40:35.502116
+M6	65	0	344	2025-11-13 12:40:35.502116
+Tiggo 7 Pro	66	0	345	2025-11-13 12:40:35.502116
+Tiggo 8 Pro	66	0	346	2025-11-13 12:40:35.502116
+Tiggo 4	66	0	347	2025-11-13 12:40:35.502116
+OMODA 5	66	0	348	2025-11-13 12:40:35.502116
+Coolray	67	0	349	2025-11-13 12:40:35.502116
+Atlas	67	0	350	2025-11-13 12:40:35.502116
+Monjaro	67	0	351	2025-11-13 12:40:35.502116
+Tugella	67	0	352	2025-11-13 12:40:35.502116
+CS35 Plus	68	0	353	2025-11-13 12:40:35.502116
+CS55 Plus	68	0	354	2025-11-13 12:40:35.502116
+CS75 Plus	68	0	355	2025-11-13 12:40:35.502116
+UNI-K	68	0	356	2025-11-13 12:40:35.502116
+Focus	69	0	357	2025-11-13 12:40:35.502116
+Kuga	69	0	358	2025-11-13 12:40:35.502116
+Explorer	69	0	359	2025-11-13 12:40:35.502116
+Mondeo	69	0	360	2025-11-13 12:40:35.502116
+EcoSport	69	0	361	2025-11-13 12:40:35.502116
+Niva	70	0	362	2025-11-13 12:40:35.502116
+Aveo	70	0	363	2025-11-13 12:40:35.502116
+Cruze	70	0	364	2025-11-13 12:40:35.502116
+Trailblazer	70	0	365	2025-11-13 12:40:35.502116
+Outlander	71	0	366	2025-11-13 12:40:35.502116
+Pajero Sport	71	0	367	2025-11-13 12:40:35.502116
+ASX	71	0	368	2025-11-13 12:40:35.502116
+L200	71	0	369	2025-11-13 12:40:35.502116
+CX-5	72	0	370	2025-11-13 12:40:35.502116
+CX-9	72	0	371	2025-11-13 12:40:35.502116
+CX-30	72	0	372	2025-11-13 12:40:35.502116
+6	72	0	373	2025-11-13 12:40:35.502116
+RX	73	0	374	2025-11-13 12:40:35.502116
+NX	73	0	375	2025-11-13 12:40:35.502116
+LX	73	0	376	2025-11-13 12:40:35.502116
+ES	73	0	377	2025-11-13 12:40:35.502116
+A4	74	0	378	2025-11-13 12:40:35.502116
+A6	74	0	379	2025-11-13 12:40:35.502116
+Q5	74	0	380	2025-11-13 12:40:35.502116
+Q7	74	0	381	2025-11-13 12:40:35.502116
+Forester	75	0	382	2025-11-13 12:40:35.502116
+Outback	75	0	383	2025-11-13 12:40:35.502116
+XV	75	0	384	2025-11-13 12:40:35.502116
+Impreza	75	0	385	2025-11-13 12:40:35.502116
+Patriot	76	0	386	2025-11-13 12:40:35.502116
+Hunter	76	0	387	2025-11-13 12:40:35.502116
+Pickup	76	0	388	2025-11-13 12:40:35.502116
+Profi	76	0	389	2025-11-13 12:40:35.502116
+XC60	77	0	390	2025-11-13 12:40:35.502116
+XC90	77	0	391	2025-11-13 12:40:35.502116
+XC40	77	0	392	2025-11-13 12:40:35.502116
+S90	77	0	393	2025-11-13 12:40:35.502116
+TXL	78	0	394	2025-11-13 12:40:35.502116
+VX	78	0	395	2025-11-13 12:40:35.502116
+RX	78	0	396	2025-11-13 12:40:35.502116
+LX	78	0	397	2025-11-13 12:40:35.502116
 \.
 
 
@@ -492,6 +824,8 @@ COPY public.car_models (name, mark_id, rating, id, created_at) FROM stdin;
 --
 
 COPY public.cars (id, name, mark, model, year, color, engine_type, transmission_type, mileage, user_id, is_deleted, is_active, is_selected_main, created_at) FROM stdin;
+5	Паджерик	Mitsubishi	Pajero sport	2017	Серебристый	DIESEL	AUTOMATIC	\N	424306502	f	t	t	2025-11-05 09:07:42.600076
+11	Тест	Mercedes-Benz	S-Class	\N	\N	\N	\N	\N	424306502	f	t	f	2025-11-13 14:05:20.572611
 \.
 
 
@@ -504,10 +838,33 @@ COPY public.instructions (title, locale, text, id, created_at) FROM stdin;
 
 
 --
+-- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.payments (user_id, payment_id, payment_type, status, amount, id, created_at) FROM stdin;
+424306502	30967e95-000f-5001-8000-106fda961fd7	DONATE	succeeded	100	1	2025-10-31 10:53:00.5395
+\.
+
+
+--
+-- Data for Name: refuel_records; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.refuel_records (car_id, total_price, liters, fuel_type, gas_station, "time", full_tank, refuel_date, id, created_at) FROM stdin;
+5	2000.00	24	DIESEL	ROSNEFT	\N	f	2025-11-06 00:00:00	4	2025-11-06 15:57:07.541697
+\.
+
+
+--
 -- Data for Name: service_parts; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.service_parts (id, service_record_id, name, part_number, quantity, price_per_unit, total_price, comment, created_at) FROM stdin;
+22	27	Нее	\N	1	\N	1400.00	\N	2025-11-05 09:28:38.266602
+27	36	Масло	\N	1	\N	0.00	\N	2025-11-06 18:52:11.847554
+28	37	Масло	\N	1	\N	500.00	\N	2025-11-06 18:54:03.495547
+29	38	Масло моторное 5W-30	\N	4	\N	4000.00	Масло	2025-11-13 10:21:03.824857
+30	38	Фильтр воздушный	\N	1	\N	800.00	\N	2025-11-13 10:21:03.840574
 \.
 
 
@@ -516,6 +873,10 @@ COPY public.service_parts (id, service_record_id, name, part_number, quantity, p
 --
 
 COPY public.service_records (user_id, car_id, title, description, total_price, service_type, service_center, service_date, id, created_at) FROM stdin;
+424306502	5	\N	\N	0.00	\N	\N	2025-11-05 00:00:00	27	2025-11-05 09:28:38.264223
+424306502	5	\N	\N	0.00	\N	\N	2025-11-06 00:00:00	36	2025-11-06 18:52:11.843557
+424306502	5	\N	\N	0.00	\N	\N	2025-11-06 00:00:00	37	2025-11-06 18:54:03.491472
+424306502	5	Сервисные работы	Обычные сервисные работы	14000.00	REPAIR	Тестовый	2025-11-04 00:00:00	38	2025-11-13 10:21:03.462085
 \.
 
 
@@ -524,6 +885,11 @@ COPY public.service_records (user_id, car_id, title, description, total_price, s
 --
 
 COPY public.service_works (id, service_record_id, name, description, price, created_at) FROM stdin;
+10	36	Замена масла	\N	0.00	2025-11-06 18:52:11.850361
+11	37	Замена масла	\N	1200.00	2025-11-06 18:54:03.498707
+12	38	Замена масла ДВС	\N	3000.00	2025-11-13 10:21:03.843203
+13	38	Замена воздушного фильтра	\N	1200.00	2025-11-13 10:21:03.847681
+14	38	Диагностика подвески	\N	2000.00	2025-11-13 10:21:03.850365
 \.
 
 
@@ -531,29 +897,37 @@ COPY public.service_works (id, service_record_id, name, description, price, crea
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, username, first_name, last_name, is_premium, bonus_points, is_banned, created_at) FROM stdin;
+COPY public.users (id, username, first_name, last_name, is_premium, bonus_points, is_banned, created_at, locale) FROM stdin;
+424306502	oparinskyi	Александр	Опаринский	f	0	f	2025-10-30 12:43:25.944114	RU
 \.
+
+
+--
+-- Name: car_documents_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.car_documents_id_seq', 7, true);
 
 
 --
 -- Name: car_marks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.car_marks_id_seq', 1, false);
+SELECT pg_catalog.setval('public.car_marks_id_seq', 78, true);
 
 
 --
 -- Name: car_models_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.car_models_id_seq', 1, false);
+SELECT pg_catalog.setval('public.car_models_id_seq', 397, true);
 
 
 --
 -- Name: cars_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.cars_id_seq', 1, false);
+SELECT pg_catalog.setval('public.cars_id_seq', 11, true);
 
 
 --
@@ -564,24 +938,38 @@ SELECT pg_catalog.setval('public.instructions_id_seq', 1, false);
 
 
 --
+-- Name: payments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.payments_id_seq', 1, true);
+
+
+--
+-- Name: refuel_records_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.refuel_records_id_seq', 4, true);
+
+
+--
 -- Name: service_parts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.service_parts_id_seq', 1, false);
+SELECT pg_catalog.setval('public.service_parts_id_seq', 30, true);
 
 
 --
 -- Name: service_records_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.service_records_id_seq', 1, false);
+SELECT pg_catalog.setval('public.service_records_id_seq', 38, true);
 
 
 --
 -- Name: service_works_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.service_works_id_seq', 1, false);
+SELECT pg_catalog.setval('public.service_works_id_seq', 14, true);
 
 
 --
@@ -597,6 +985,22 @@ SELECT pg_catalog.setval('public.users_id_seq', 1, false);
 
 ALTER TABLE ONLY public.alembic_version
     ADD CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num);
+
+
+--
+-- Name: car_documents car_documents_car_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.car_documents
+    ADD CONSTRAINT car_documents_car_id_key UNIQUE (car_id);
+
+
+--
+-- Name: car_documents car_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.car_documents
+    ADD CONSTRAINT car_documents_pkey PRIMARY KEY (id);
 
 
 --
@@ -637,6 +1041,22 @@ ALTER TABLE ONLY public.cars
 
 ALTER TABLE ONLY public.instructions
     ADD CONSTRAINT instructions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: payments payments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.payments
+    ADD CONSTRAINT payments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: refuel_records refuel_records_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.refuel_records
+    ADD CONSTRAINT refuel_records_pkey PRIMARY KEY (id);
 
 
 --
@@ -688,6 +1108,14 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: car_documents car_documents_car_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.car_documents
+    ADD CONSTRAINT car_documents_car_id_fkey FOREIGN KEY (car_id) REFERENCES public.cars(id) ON DELETE CASCADE;
+
+
+--
 -- Name: car_models car_models_mark_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -701,6 +1129,22 @@ ALTER TABLE ONLY public.car_models
 
 ALTER TABLE ONLY public.cars
     ADD CONSTRAINT cars_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: payments payments_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.payments
+    ADD CONSTRAINT payments_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: refuel_records refuel_records_car_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.refuel_records
+    ADD CONSTRAINT refuel_records_car_id_fkey FOREIGN KEY (car_id) REFERENCES public.cars(id) ON DELETE CASCADE;
 
 
 --
@@ -739,5 +1183,5 @@ ALTER TABLE ONLY public.service_works
 -- PostgreSQL database dump complete
 --
 
-\unrestrict qxiBYQc7izakaZQli4h65PzFOVp0rU3ClUXcabVlTQ9UWm4RvIMvOR2aIqF4MfD
+\unrestrict iqrDT76R4FcrzNyc8q4wyShAjLVPF2OEZGXZ0N4jmAxGnsgfOFQpGx3CtJ9WbHh
 

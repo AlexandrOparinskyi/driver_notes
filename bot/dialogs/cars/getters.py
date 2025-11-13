@@ -35,7 +35,7 @@ async def getter_edit_part(i18n: TranslatorHub,
     buttons = await get_button_for_edit_car(
         i18n,
         car_part,
-        dialog_manager.dialog_data.get("mark_id")
+        dialog_manager.dialog_data.get("mark_id"),
     )
 
     return {"car_edit_part_text": text,
