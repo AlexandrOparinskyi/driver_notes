@@ -9,4 +9,4 @@ COPY web/ ./web/
 COPY database/ ./database/
 COPY config.py .
 
-CMD uvicorn web.main:app --host "0.0.0.0" --port 8000 --proxy-headers
+CMD uvicorn web.connect:app --host "0.0.0.0" --port 8000 --proxy-headers
